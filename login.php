@@ -25,7 +25,7 @@ if(isset($_SESSION["user_id"])){
 	<link rel="stylesheet" type="text/css" href="./assets/bootstrap/css/bootstrap.css">
 </head>
 <body>
-	<?php include($_SERVER['DOCUMENT_ROOT']."/higesta/partial/navbar.php"); ?>
+	<?php include("./partial/navbar.php"); ?>
 
 	<div class="container">
 		<h1>ログイン画面</h1>

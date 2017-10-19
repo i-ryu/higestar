@@ -22,7 +22,7 @@ if (isset($_POST["sign_up"])) {
 </head>
 
 <body>
-	<?php include("partial/navbar.php"); ?>
+	<?php include("./partial/navbar.php"); ?>
 
 	<div class="container">
 		<h1>新規登録画面</h1>

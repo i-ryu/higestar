@@ -26,7 +26,7 @@ $_SESSION = array();
 
 </head>
 <body>
-    <?php include("partial/navbar.php"); ?>
+    <?php include("./partial/navbar.php"); ?>
 
     <div class="container">
 

@@ -27,7 +27,7 @@ if(isset($_POST["file_data"])){
 
 </head>
 <body>
-	<?php include($_SERVER['DOCUMENT_ROOT']."/higesta/partial/navbar.php"); ?>
+	<?php include("./partial/navbar.php"); ?>
 
 	<div class="container">
 		<h1>メイン画面</h1>
