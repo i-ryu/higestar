@@ -1,11 +1,11 @@
 <?php
-require_once "./class/user.php" ;
+require_once("./class/user.php") ;
 
 session_start();
 
 // ログイン状態チェック
 if (!isset($_SESSION["user_id"])) {
-	header("Location: logout.php");
+	header("Location: login.php");
 	exit;
 }else{
 	$user = new user($_SESSION["user_id"]) ;

@@ -1,6 +1,6 @@
 <?php
 
-require_once "class/db_connect.php" ;
+require_once("class/db_connect.php") ;
 
 session_start();
 
@@ -31,7 +31,7 @@ $_SESSION = array();
     <div class="container">
 
         <h1>ログアウト画面</h1>
-        <div><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></div>
+        <div><?php echo htmlspecialchars($errorMessage); ?></div>
         <ul>
             <li><a href="/higesta/login.php">ログイン画面に戻る</a></li>
         </ul>

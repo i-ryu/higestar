@@ -6,15 +6,13 @@ session_start();
 
 // ログイン状態チェック
 if (!isset($_SESSION["user_id"])) {
-	header("Location: logout.php");
-	exit;
+	// login.phpへ移動する
+	header("Location: login.php");
+	exit();
 }else{
 	$user = new User($_SESSION["user_id"]) ;
 }
 
-if(isset($_POST["file_data"])){
-	var_dump($_POST["file_data"]) ;
-}
 
 ?>
 

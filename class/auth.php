@@ -14,41 +14,47 @@ class Auth{
 	}
 
 	function login_auth($post){
+		
+		// メッセージを返すために$msgを定義する。
 		$msg = "" ;
+
 		if(empty($this->id) || empty($this->password)){
 			$msg = "IDまたは、パスワードが入力されていません。" ;
 		}
 
-		$sql = "SELECT * FROM users WHERE user_id = ?" ;
-
+		// データベースからデータを取ってくる。
 		$this->db->connect() ;
+		$sql = "SELECT * FROM users WHERE user_id = ?" ;
 		$stmt = $this->db->dbh->prepare($sql);
-
 		$stmt->execute(array($this->id));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
-		var_dump($result) ;
 
+		// もしデータがあれば、
 		if ($result) {
+			// もしパスワードがあっていれば、
 			if (password_verify($this->password, $result['password'])) {
 				session_regenerate_id(true);
 
-                // 入力したIDのユーザー名を取得			
+                // user_idをセッションへ保存		
 				$_SESSION["user_id"] = $this->id ;
+
 				header("Location: /higesta/index.php");
 
 				exit();
 			} else {
-				$msg = 'ユーザーIDあるいはパスワードに誤りがあります。33';
+				$msg = "パスワードに誤りがあります。";
 			}
 		}else{
-			$msg = 'ユーザーIDあるいはパスワードに誤りがあります。	111';
+			$msg = "ユーザーIDあるいはパスワードに誤りがあります。";
 		}
 
 		$this->db->disconnect() ;
 		return $msg ;
 	}
 	
+	// 登録
 	function sign_up($name,$password2){
+		
 		if (empty($name)) 
 			return "ユーザー名が未入力です。";
 		else if (empty($this->password) || empty($password2))
@@ -61,10 +67,9 @@ class Auth{
 			&& !empty($password2) 
 			&& $this->password === $password2) 
 		{
+			// データベースへ保存
 			$this->db->connect() ;
-
 			$stmt = $this->db->dbh->prepare("INSERT INTO users(user_name,user_id,password) VALUES (?, ?, ?)");
-
 			$stmt->execute(array($name, $this->id, password_hash($this->password, PASSWORD_DEFAULT)));
 			$this->db->disconnect() ;
 

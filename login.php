@@ -1,19 +1,21 @@
 <?php 
 
-require "./assets/password.php" ;
-require './class/auth.php';
+require("./assets/password.php") ;
+require("./class/auth.php");
 session_start();
 
 $msg = "" ;
-
 // // ログインボタンが押された場合
 if (isset($_POST["login"])) {
+	// authクラスのインスタンスを生成
 	$auth = new Auth($_POST["user_id"],$_POST["user_password"]) ;
+	// authクラスのlogin_auth関数を実行
 	$msg = $auth->login_auth($_POST["user_id"]) ;
 }
 
+// ログインページに移動したとしてももうすでにログインしていれば、index.phpへ飛ばす
 if(isset($_SESSION["user_id"])){
-	header("Location: http://localhost/higesta/index.php");
+	header("Location: index.php");
 }
 ?>
 

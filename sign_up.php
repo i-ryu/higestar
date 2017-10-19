@@ -1,10 +1,8 @@
 <?php
-require "./assets/password.php" ;
-require "./class/auth.php" ;
+require("./assets/password.php");
+require("./class/auth.php") ;
 
 session_start();
-
-$msg = "" ;
 
 // ログインボタンが押された場合
 if (isset($_POST["sign_up"])) {
