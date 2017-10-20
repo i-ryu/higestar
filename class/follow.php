@@ -37,12 +37,24 @@ class Follow{
 	}
 
 	function get_follow(){
+		// フォローの
 		$this->db->connect() ;
-		$sql = "SELECT * FROM users JOIN follows ON users.user_id = follows.user_id WHERE users.user_id = ?" ;
+		$sql = "SELECT follow_id FROM users JOIN follows ON users.user_id = follows.user_id WHERE users.user_id = ?" ;
 		$stmt = $this->db->dbh->prepare($sql);
 		// $stmt->execute(array($this->user_id,$this->user_id));
 		$stmt->execute(array($this->user_id));
-		return $stmt->fetchAll(PDO::FETCH_ASSOC) ;
+		$follow_user_id_list = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
+
+		$users = [] ;
+
+		foreach ($follow_user_id_list as $follow_user_id) {
+			$stmt = $this->db->dbh->prepare("SELECT user_name,user_id FROM users WHERE user_id = ?");
+			$stmt->execute(array($follow_user_id["follow_id"]));
+			$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
+			array_push($users,$result) ;
+		}
+
+		return  $users;
 	}
 
 }

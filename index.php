@@ -50,7 +50,7 @@ if (!isset($_SESSION["user_id"])) {
 		<h1>フォロー一覧</h1>
 		<?php foreach ($follow->get_follow() as $f): ?>
 			<p>
-				<a href=""><?php echo $f["user_name"] ; ?></a>
+				<a href="./users.php?user_id=<?php echo $f['user_id'] ; ?>"><?php echo $f["user_name"] ; ?></a>
 			</p>
 		<?php endforeach ; ?>
 
