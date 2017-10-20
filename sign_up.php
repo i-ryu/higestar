@@ -4,6 +4,8 @@ require("./class/auth.php") ;
 
 session_start();
 
+$msg = "" ;
+
 // ログインボタンが押された場合
 if (isset($_POST["sign_up"])) {
 	$auth = new Auth($_POST["user_id"],$_POST["password"]) ;

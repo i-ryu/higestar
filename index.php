@@ -1,6 +1,7 @@
 <?php
 
 require_once("class/user.php") ;
+require_once("class/follow.php") ;
 
 session_start();
 
@@ -11,6 +12,10 @@ if (!isset($_SESSION["user_id"])) {
 	exit();
 }else{
 	$user = new User($_SESSION["user_id"]) ;
+	$follow = new Follow($_SESSION["user_id"]) ;
+
+	$userSet = new UserSet() ;
+	$users = $userSet->all_find_users() ;
 }
 
 
@@ -41,6 +46,25 @@ if (!isset($_SESSION["user_id"])) {
 			<li><a href="logout.php">ログアウト</a></li>
 		</ul>
 		<a href="update_profile.php">プロフィールを更新する。</a>
+
+		<h1>フォロー一覧</h1>
+		<?php foreach ($follow->get_follow() as $f): ?>
+			<p>
+				<a href=""><?php echo $f["user_name"] ; ?></a>
+			</p>
+		<?php endforeach ; ?>
+
+
+		<h1>ユーザー一覧</h1>
+		<?php foreach($users as $u): ?>
+			<?php if($u["user_id"] != $_SESSION["user_id"]): ?>
+				<p>
+					<a href="users.php?user_id=<?php echo $u['user_id'] ; ?>">
+						<?php echo $u["user_name"] ; ?>
+					</a>
+				</p>
+			<?php endif ; ?>
+		<?php endforeach ; ?>
 
 	</div>
 

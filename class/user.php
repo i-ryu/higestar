@@ -1,6 +1,6 @@
 <?php
 
-require_once "db_connect.php" ;
+require_once("db_connect.php") ;
 
 class User{
 	var $db ;
@@ -94,13 +94,29 @@ class User{
 
 		$this->db->disconnect() ;
 	}
+}
 
-	function user_find(){
-		$stmt = $this->db->dbh->prepare("SELECT * FROM users WHERE authority = ?");
-		$stmt->execute(array(0));
-		$result = $stmt->fetch_all(PDO::FETCH_ASSOC) ;
-		return $result ;
+class UserSet{
+	var $db ;
+
+	function __construct(){
+		$this->db = new Database() ;
 	}
+
+	function all_find_users(){
+		$users = [] ;
+
+		$this->db->connect() ;
+
+		$stmt = $this->db->dbh->prepare("SELECT * FROM users");
+		$stmt->execute();
+		$users = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
+
+		$this->db->disconnect() ;
+
+		return $users ;
+	}
+
 }
 
 
