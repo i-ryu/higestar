@@ -25,6 +25,7 @@ if(isset($_SESSION["user_id"])){
 	<meta charset="UTF-8">
 	<title>ログイン</title>
 	<link rel="stylesheet" type="text/css" href="./assets/bootstrap/css/bootstrap.css">
+	<link rel="shortcut icon" href="image/favicon.png">
 </head>
 <body>
 	<?php include("./partial/navbar.php"); ?>
