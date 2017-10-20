@@ -6,18 +6,16 @@ require_once("class/follow.php") ;
 session_start();
 
 // ログイン状態チェック
-if (!isset($_SESSION["user_id"])) {
+if (!isset($_SESSION["id"])) {
 	// login.phpへ移動する
 	header("Location: login.php");
 	exit();
-}else{
-	$user = new User($_SESSION["user_id"]) ;
-	$follow = new Follow($_SESSION["user_id"]) ;
-
+}elseif(isset($_SESSION["user_id"])){
+	$user = new User($_SESSION["id"]) ;
+	$follow = new Follow($_SESSION["id"]) ;
 	$userSet = new UserSet() ;
 	$users = $userSet->all_find_users() ;
 }
-
 
 ?>
 
@@ -42,15 +40,11 @@ if (!isset($_SESSION["user_id"])) {
 			<?php endif; ?>
 		<?php endforeach ; ?>
 
-		<ul>
-			<li><a href="logout.php">ログアウト</a></li>
-		</ul>
-		<a href="update_profile.php">プロフィールを更新する。</a>
-
+	
 		<h1>フォロー一覧</h1>
-		<?php foreach ($follow->get_follow() as $f): ?>
+		<?php foreach (	$follow->get_follow() as $f): ?>
 			<p>
-				<a href="./users.php?user_id=<?php echo $f['user_id'] ; ?>"><?php echo $f["user_name"] ; ?></a>
+				<a href="./users.php?id=<?php echo $f['id'] ; ?>"><?php echo $f["user_name"] ; ?></a>
 			</p>
 		<?php endforeach ; ?>
 
@@ -59,9 +53,7 @@ if (!isset($_SESSION["user_id"])) {
 		<?php foreach($users as $u): ?>
 			<?php if($u["user_id"] != $_SESSION["user_id"]): ?>
 				<p>
-					<a href="users.php?user_id=<?php echo $u['user_id'] ; ?>">
-						<?php echo $u["user_name"] ; ?>
-					</a>
+					<a href="users.php?id=<?php echo $u['id'] ; ?>"><?php echo $u["user_name"] ; ?></a>
 				</p>
 			<?php endif ; ?>
 		<?php endforeach ; ?>

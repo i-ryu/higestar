@@ -11,9 +11,8 @@
 	<div id="gnavi" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
 			<li><a href="/higesta/">髭スタ</a></li>
+			<li><a href="update_profile.php">アカウント情報の変更</a></li>
 			<li><a href="logout.php">ログアウト</a></li>
-			<li><a href="">Link2</a></li>
-			<li><a href="">Link3</a></li>
 		</ul>
 	</div>
 </nav>

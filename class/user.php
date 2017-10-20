@@ -5,6 +5,7 @@ require_once("db_connect.php") ;
 class User{
 	var $db ;
 	var $id ;
+	var $user_id ;
 	var $name ;
 	var $email ;
 
@@ -12,7 +13,7 @@ class User{
 	function __construct($id){
 		$this->id = htmlspecialchars($id) ;
 		$this->keys = [
-			"id" => "ユーザーID"
+			"user_id" => "ユーザーID"
 			, "name" => "ユーザー名"
 			, "email" => "メールアドレス"
 		] ;
@@ -20,13 +21,15 @@ class User{
 		$this->find() ;
 
 	}
+
 	function find(){
 		$this->db->connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT * FROM users WHERE user_id = ?");
+		$stmt = $this->db->dbh->prepare("SELECT * FROM users WHERE id = ?");
 		$stmt->execute(array($this->id));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
+		$this->user_id = $result["user_id"] ;
 		$this->name = $result["user_name"] ;
 		$this->password = $result["password"] ;
 		$this->email = $result["email"] ;
@@ -108,7 +111,7 @@ class UserSet{
 
 		$this->db->connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT * FROM users");
+		$stmt = $this->db->dbh->prepare("SELECT id,user_id,user_name FROM users");
 		$stmt->execute();
 		$users = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 

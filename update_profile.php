@@ -8,7 +8,7 @@ if (!isset($_SESSION["user_id"])) {
 	header("Location: login.php");
 	exit;
 }else{
-	$user = new user($_SESSION["user_id"]) ;
+	$user = new User($_SESSION["id"]) ;
 }
 
 
@@ -42,7 +42,7 @@ if(isset($_POST["update"])){
 			<input type="hidden" name="update" value="update">
 			<div class="form-group">
 				<label>ユーザーID</label>
-				<input type="text" name="user_id" class="form-control" value="<?php echo $user->id ?>">
+				<input type="text" name="user_id" class="form-control" value="<?php echo $user->user_id ?>">
 			</div>
 			<div class="form-group">
 				<label>ユーザー名</label>

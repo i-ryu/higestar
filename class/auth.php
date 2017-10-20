@@ -36,7 +36,8 @@ class Auth{
 				session_regenerate_id(true);
 
                 // user_idをセッションへ保存		
-				$_SESSION["user_id"] = $this->id ;
+				$_SESSION["user_id"] = $result["user_id"] ;
+				$_SESSION["id"] = $result["id"] ;
 
 				header("Location: /higesta/index.php");
 
