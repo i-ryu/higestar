@@ -19,7 +19,7 @@ if (isset($_POST["sign_up"])) {
 	<meta charset="UTF-8">
 	<title>新規登録</title>
 	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.css">
-	<link rel="shortcut icon" href="image/favicon.png">
+	<link rel="shortcut icon" href="images/favicon.png">
 </head>
 
 <body>

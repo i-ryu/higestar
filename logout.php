@@ -23,7 +23,7 @@ $_SESSION = array();
     <meta charset="UTF-8">
     <title>ログアウト</title>
     <link rel="stylesheet" type="text/css" href="./assets/bootstrap/css/bootstrap.css">
-    <link rel="shortcut icon" href="image/favicon.png">
+    <link rel="shortcut icon" href="images/favicon.png">
 
 </head>
 <body>
