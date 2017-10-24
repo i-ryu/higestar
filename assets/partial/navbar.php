@@ -59,8 +59,14 @@ $domain = "http://higesta.com/" ;
       <ul class="nav navbar-nav hidden">
         <li><a href="#" data-action="growl">Growl</a></li>
         <li><a href="<?php echo $domain ; ?>edit">プロフィール編集</a></li>
+<<<<<<< HEAD
         <li><a href="<?php echo $domain ; ?>login/">ログアウト</a></li>
 
+=======
+        <li><a href="login/">ログアウト</a></li>
+        <li><a href="">ランキング</a></li>
+        <li><a href="">苦情はこちら</a></li>
+>>>>>>> ryuya
       </ul>
     </div>
   </div>
