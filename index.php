@@ -58,7 +58,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
       <div class="col-md-3">
         <div class="alert alert-warning alert-dismissible hidden-xs" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <a class="alert-link" href="profile/">Visit your profile!</a> Check your self, you aren't looking too good.
+          <a class="alert-link" href="profile/">髭の手入れはお済みですか？今日の髭占いはボーボーです。
         </div>
 
         <!-- 広告 -->
