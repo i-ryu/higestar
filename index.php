@@ -2,6 +2,8 @@
 
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 
+$user->password_check($_SESSION["id"],"test") ;
+
 ?>
 
 <!DOCTYPE html>

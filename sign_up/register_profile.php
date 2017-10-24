@@ -1,24 +1,30 @@
 <?php 
 
-require($_SERVER["DOCUMENT_ROOT"]."assets/common/password.php") ;
-require($_SERVER["DOCUMENT_ROOT"]."assets/common/auth.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/auth.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/function.php");
+
 session_start();
-$domain = "http://higesta.com/" ;
 
-
-// // ログインボタンが押された場合
-if (!empty($_POST["login"])) {
-  // authクラスのインスタンスを生成
-  $auth = new Auth($_POST["email"],$_POST["user_password"]) ;
-  // authクラスのlogin_auth関数を実行
-  $msg = $auth->login_auth($_POST["user_id"]) ;
+if(!empty($_POST["sign_up"])){
+  $auth = new Auth(h($_POST["email"])) ;
+  $auth->sign_up($_POST["user_password"],$_POST["user_password2"]) ;
 }
+
+if(!empty($_POST["profile_setting"])){
+  $auth = new Auth(h($_POST["email"]));
+  $auth->setting_profile(
+    h($_POST["user_id"]),
+    h($_POST["user_name"]),
+    h($_POST["profile_content"]),
+    $_FILES["upfile"]
+  );
+}
+
 
 // ログインページに移動したとしてももうすでにログインしていれば、index.phpへ飛ばす
 if(!empty($_SESSION["user_id"])){
   //header("Location: index.php");
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -51,26 +57,36 @@ if(!empty($_SESSION["user_id"])){
 <body>
   <div class="container-fluid container-fill-height">
     <div class="container-content-middle">
-      <form role="form" class="m-x-auto text-center app-login-form" method="POST" action="">
 
-        <a href="../index.html" class="app-brand m-b-lg">
+      <form enctype="multipart/form-data" role="form" class="m-x-auto text-center app-login-form" method="POST" action="" >
+
+        <a href="../index.php" class="app-brand m-b-lg">
           <img src="../assets/img/brand.png" alt="brand">
         </a>
 
         <div class="form-group">
-          <input class="form-control" placeholder="メールアドレス" name="email">
+          <label for="user_id">ユーザーID</label>
+          <input class="form-control" placeholder="higehige" name="user_id">
         </div>
 
+        <div class="form-group">
+          <label for="user_name">ユーザー名</label>
+          <input class="form-control" placeholder="髭顔" name="user_name">
+        </div>
+        
         <div class="form-group m-b-md">
-          <input type="password" class="form-control" placeholder="パスワード" name="user_password">
+          <label for="user_password">プロフィール画像</label>
+          <input type="file" class="form-control" name="upfile">
         </div>
-        <input type="hidden" name="login" value="true">
+        <div class="form-group m-b-md">
+          <label for="profile_content">紹介文</label>
+          <textarea name="profile_content" class="form-control"></textarea>
+        </div>
 
+        <input type="hidden" name="profile_setting" value="true">
+        <input type="hidden" name="email" value="<?php echo $_POST['email'] ; ?>">
         <div class="m-b-lg">
-          <button class="btn btn-primary">ログイン</button>
-          <button class="btn btn-default" >
-            <a href="<?php echo $domain ;?>sign_up">新規登録</a>
-          </button>
+          <input type="submit" class="btn btn-primary" value="登録">
         </div>
 
         <footer class="screen-login">
@@ -79,7 +95,6 @@ if(!empty($_SESSION["user_id"])){
       </form>
     </div>
   </div>
-
 
   <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>
 

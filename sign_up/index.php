@@ -1,24 +1,12 @@
 <?php 
 
-require($_SERVER["DOCUMENT_ROOT"]."assets/common/password.php") ;
-require($_SERVER["DOCUMENT_ROOT"]."assets/common/auth.php");
 session_start();
 $domain = "http://higesta.com/" ;
-
-
-// // ログインボタンが押された場合
-if (!empty($_POST["login"])) {
-  // authクラスのインスタンスを生成
-  $auth = new Auth($_POST["email"],$_POST["user_password"]) ;
-  // authクラスのlogin_auth関数を実行
-  $msg = $auth->login_auth($_POST["user_id"]) ;
-}
 
 // ログインページに移動したとしてももうすでにログインしていれば、index.phpへ飛ばす
 if(!empty($_SESSION["user_id"])){
   //header("Location: index.php");
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +20,7 @@ if(!empty($_SESSION["user_id"])){
   <meta name="author" content="">
 
   <title>
-    Login &middot; 
+    新規無料会員登録 &middot; 
   </title>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
   <link href="../assets/css/toolkit.css" rel="stylesheet">
@@ -51,34 +39,58 @@ if(!empty($_SESSION["user_id"])){
 <body>
   <div class="container-fluid container-fill-height">
     <div class="container-content-middle">
-      <form role="form" class="m-x-auto text-center app-login-form" method="POST" action="">
+      <form role="form" class="m-x-auto text-center app-login-form" method="POST" action="<?php echo $domain ;?>/sign_up/register_profile.php">
 
-        <a href="../index.html" class="app-brand m-b-lg">
+        <a href="../index.php" class="app-brand m-b-lg">
           <img src="../assets/img/brand.png" alt="brand">
         </a>
 
         <div class="form-group">
-          <input class="form-control" placeholder="メールアドレス" name="email">
+          <label for="user_mail">メールアドレス</label>
+          <input class="form-control" placeholder="example@higesta.com" name="email">
         </div>
 
         <div class="form-group m-b-md">
+          <label for="user_password">パスワード</label>
           <input type="password" class="form-control" placeholder="パスワード" name="user_password">
         </div>
-        <input type="hidden" name="login" value="true">
 
+        <div class="form-group m-b-md">
+          <label for="user_password">パスワード</label>          
+          <input type="password" class="form-control" placeholder="確認用パスワード" name="user_password2">
+        </div>
+
+        <input type="hidden" name="sign_up" value="true">
         <div class="m-b-lg">
-          <button class="btn btn-primary">ログイン</button>
-          <button class="btn btn-default" >
-            <a href="<?php echo $domain ;?>sign_up">新規登録</a>
-          </button>
+            <input type="submit" class="btn btn-primary" value="無料会員登録">
         </div>
 
         <footer class="screen-login">
-          <a href="#" class="text-muted">パスワードを忘れた方へ</a>
+          <a href="<?php echo $domain ; ?>login" class="text-muted">←ログイン画面へ戻る</a>
         </footer>
       </form>
     </div>
   </div>
+
+  <?php if (isset($msgs)): ?>
+    <fieldset>
+      <legend>Result</legend>
+      <ul>
+        <?php foreach ($msgs as $msg): ?> 
+          <li style="color:<?=h($msg[0])?>;"><?=h($msg[1])?></li>
+        <?php endforeach; ?>
+      </ul>
+    </fieldset>
+  <?php endif; ?>
+
+  <form enctype="multipart/form-data" method="post" action="">
+    <fieldset>
+      Directory path: <input type="text" name="path" value="" /><br />
+      Filename(GIF, JPEG, PNG): <br />
+      <input type="submit" value="Upload" />
+    </fieldset>
+  </form>
+
 
 
   <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>

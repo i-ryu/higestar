@@ -25,10 +25,9 @@
           <br>          
         </div>
 
-
         <div class="form-group">
           <label for="user_password">パスワードを入力</label>
-          <input type="text" name="user_password" class="form-control" placeholder="パスワード">
+          <input type="password" name="user_password" class="form-control" placeholder="パスワード">
           <br>          
         </div>
         <input type="hidden" name="update" value="true">

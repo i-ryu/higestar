@@ -13,11 +13,6 @@ class User{
 
 	function __construct($id){
 		$this->id = htmlspecialchars($id) ;
-		$this->keys = [
-			"user_id" => "ユーザーID"
-			, "name" => "ユーザー名"
-			, "email" => "メールアドレス"
-		] ;
 		$this->db = new Database() ;
 		$this->find() ;
 
@@ -40,58 +35,41 @@ class User{
 		$this->db->disconnect() ;
 	}
 
-	function sign_up($user_name,$password,$password2){
-		$this->name = $user_name ;
-		if (empty($this->name)) 
-			return false ;
-		else if (empty($password) || empty($password2))
-			return false ;
-
-
-		if (
-			!empty($this->name) 
-			&& !empty($password) 
-			&& !empty($password2) 
-			&& $password === $password2) 
-		{
-			$this->db->connect() ;
-
-			$stmt = $this->db->dbh->prepare("INSERT INTO users(user_name,user_id, user_password) VALUES (?, ?, ?)");
-
-			$stmt->execute(array($this->name, $this->id, password_hash($password, PASSWORD_DEFAULT)));
-
-			return  true ;
-
-		} else if($password != $password2) {
-			return false ;
-		}
-		$this->db->disconnect() ;
-
-		return false ;
-	}
-
 	function password_check($password){
 		$this->db->connect() ;
-
-		$stmt = $this->db->dbh->prepare("INSERT INTO users(user_name,user_id, user_password) VALUES (?, ?, ?)");
-
-		$stmt->execute(array($this->name, $this->id, password_hash($password, PASSWORD_DEFAULT)));
+		$sql = "SELECT * FROM users WHERE id = ?" ;
+		$stmt = $this->db->dbh->prepare($sql);
+		$stmt->execute(array($this->id));
+		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
+		//var_dump($result) ;
+		// もしデータがあれば、
+		if ($result) {
+			// もしパスワードがあっていれば、
+			if (password_verify($password, $result['password'])) {
+				session_regenerate_id(true);
+				return true ;
+			} else {
+				return false ;
+			}
+		}else{
+			return false ;
+		}
 
 		$this->db->disconnect() ;
 
 	}
-
 
 	function update($new_id,$name,$email,$password){
 		// パスワードが一致しているか確認
-		if($this->password_check()){
+		var_dump($this->password_check($password)) ;
+		if($this->password_check($password)){
 			$this->db->connect() ;
 
 			$stmt = $this->db->dbh->prepare("
 				UPDATE users SET 
 				user_id = ?
 				, user_name = ?
-				, user_email = ?
+				, email = ?
 				WHERE id = ?");
 
 			$params = array(

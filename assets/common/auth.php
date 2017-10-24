@@ -1,16 +1,18 @@
 
 <?php 
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/db_connect.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/function.php") ;
 
 class Auth{
 	var $id ;
-	var $password ;
+	var $email ;
 	var $db ;
+	var $domain ;
 
-	function __construct($id,$password){
-		$this->id = $id ;
-		$this->password = $password ;
+	function __construct($email){
+		$this->email = $email ;
 		$this->db = new Database() ;
+		$this->domain = "http://higesta.com/" ;
 	}
 
 	function login_auth($post){
@@ -18,15 +20,15 @@ class Auth{
 		// メッセージを返すために$msgを定義する。
 		$msg = "" ;
 
-		if(empty($this->id) || empty($this->password)){
+		if(empty($this->email) || empty($this->password)){
 			$msg = "IDまたは、パスワードが入力されていません。" ;
 		}
 
 		// データベースからデータを取ってくる。
 		$this->db->connect() ;
-		$sql = "SELECT * FROM users WHERE user_id = ?" ;
+		$sql = "SELECT * FROM users WHERE email = ?" ;
 		$stmt = $this->db->dbh->prepare($sql);
-		$stmt->execute(array($this->id));
+		$stmt->execute(array($this->email));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
 		// もしデータがあれば、
@@ -38,8 +40,6 @@ class Auth{
                 // user_idをセッションへ保存		
 				$_SESSION["user_id"] = $result["user_id"] ;
 				$_SESSION["id"] = $result["id"] ;
-				var_dump($_SESSION["user_id"]) ;
-				var_dump($_SESSION["id"]) ;
 
 				header("Location: ../index.php");
 
@@ -56,34 +56,92 @@ class Auth{
 	}
 	
 	// 登録
-	function sign_up($name,$password2){
+	function sign_up($password,$password2){
 		
-		if (empty($name)) 
-			return "ユーザー名が未入力です。";
-		else if (empty($this->password) || empty($password2))
-			return "パスワードが未入力です。";
+		if (empty($this->email)) 
+			return false ;
+		else if (empty($password) || empty($password2))
+			return false ;
 
 
 		if (
-			!empty($name) 
-			&& !empty($this->password) 
+			!empty($this->email) 
+			&& !empty($password) 
 			&& !empty($password2) 
-			&& $this->password === $password2) 
+			&& $password === $password2) 
 		{
 			// データベースへ保存
 			$this->db->connect() ;
-			$stmt = $this->db->dbh->prepare("INSERT INTO users(user_name,user_id,password) VALUES (?, ?, ?)");
-			$stmt->execute(array($name, $this->id, password_hash($this->password, PASSWORD_DEFAULT)));
+			$stmt = $this->db->dbh->prepare("INSERT INTO users (email,password) VALUES (?, ?)");
+			$stmt->execute(array($this->email, password_hash($password, PASSWORD_DEFAULT)));
+			
+			$stmt = $this->db->dbh->prepare("SELECT * FROM users WHERE email = ?") ;
+			$stmt->execute(array($this->email));
+			$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
+
+			$dir = $_SERVER["DOCUMENT_ROOT"]."user_images/".$result["id"] ;
+
+			/* ディレクトリの生成 */
+			if (!is_dir($dir)) {
+      			// ディレクトリが存在していなければ生成を試みる
+				if (!mkdir($dir)) {
+			        // ディレクトリ生成に失敗
+					throw new RuntimeException("ディレクトリ生成に失敗:".$dir);
+				}
+				// パーミッションを0777に設定
+				chmod($dir, 0777);
+				$msgs[] = array('blue', 'Created directory "' . $dir . '"');
+			}			
+
 			$this->db->disconnect() ;
 
-			return  "登録が完了しました。あなたの登録IDは".$this->id."です。";  
 
-		} else if($this->password != $password2) {
-			return "パスワードが一致しません。" ;
+			return true ;
+
+		} else if($password != $password2) {
+			return false ;
 		}
-		return "エラー" ;
+		return false ;
+	}
 
+	function setting_profile($user_id,$user_name,$profile_content,$file){
+		$this->db->connect() ;
 
+		$stmt = $this->db->dbh->prepare("SELECT id,user_id FROM users WHERE email = ?") ;
+		$stmt->execute(array($this->email));
+		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
+
+		$_SESSION["id"] = $result["id"] ;
+		$_SESSION["user_id"] = $result["user_id"] ;
+
+		$stmt = $this->db->dbh->prepare("
+			UPDATE users SET 
+			user_id = ?
+			, user_name = ?
+			, content = ?
+			, img_path = ?
+			WHERE email = ?");
+
+		$params = array(
+			$user_id
+			, $user_name
+			, $profile_content
+			, "assets/user_images/".$result["id"]."/".$file["name"]
+			, $this->email
+		);
+
+		$stmt->execute($params);
+
+		$dir = $_SERVER["DOCUMENT_ROOT"]."user_images/".$result["id"]."/".$file["name"] ;
+		if (!move_uploaded_file($file['tmp_name'], $dir)) {
+            // ファイル移動に失敗
+			throw new RuntimeException('Failed to save uploaded file');
+		}
+        // ファイルのパーミッションを確実に0644に設定する
+		chmod($dir, 0644);
+
+		$this->db->disconnect() ;
+		//header("Location: ".$this->domain) ;
 	}
 
 }

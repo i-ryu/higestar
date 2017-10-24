@@ -33,6 +33,7 @@ if(!empty($_FILES["upfile"])){
 }
 
 if(!empty($_POST["update"])){
+  var_dump($_POST) ;
   $user->update(
     h($_POST["user_id"]) ,
     h($_POST["user_name"]) ,
