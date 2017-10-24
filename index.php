@@ -1,102 +1,78 @@
 <?php
 
-require_once("class/user.php") ;
-require_once("class/follow.php") ;
-require_once("class/post.php") ;
-require_once("class/db_connect.php") ;
-
-session_start();
-
-// ログイン状態チェック
-if (!isset($_SESSION["id"])) {
-	// login.phpへ移動する
-	header("Location: login.php");
-	exit();
-}elseif(isset($_SESSION["user_id"])){
-	$user = new User($_SESSION["id"]) ;
-	$follow = new Follow($_SESSION["id"]) ;
-	$post = new Post($_SESSION["id"]) ;
-	$userSet = new UserSet() ;
-	$users = $userSet->all_find_users() ;
-}
-
-if(isset($_FILES["upfile"])){
-	$post->upload($_FILES['upfile']) ;
-}
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<title>メイン</title>
-	<link rel="stylesheet" type="text/css" href="./assets/bootstrap/css/bootstrap.css">
-	<link rel="shortcut icon" href="images/favicon.png">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+
+  <title>
+    Home &middot; 
+  </title>
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  <link href="assets/css/toolkit.css" rel="stylesheet">
+  <link href="assets/css/application.css" rel="stylesheet">
+  <style>
+  /* note: this is a hack for ios iframe for bootstrap themes shopify page */
+  /* this chunk of css is not part of the toolkit :) */
+  body {
+    width: 1px;
+    min-width: 100%;
+    *width: 100%;
+  }
+</style>
 
 </head>
-<body>
-	<?php include("./partial/navbar.php"); ?>
 
-	<div class="container">
-		<h1>メイン画面</h1>
-		<p>ようこそ<u><?php echo $user->name ; ?></u>さん</p>
+<body class="with-top-navbar">
 
-		<?php foreach (get_object_vars($user) as $key => $value): ?>
-			<?php if(isset($user->keys[$key])): ?>
-				<p><?php echo $user->keys[$key] ; ?>：<?php echo $value ; ?></p>
-			<?php endif; ?>
-		<?php endforeach ; ?>
+  <div class="growl" id="app-growl"></div>
+  <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/navbar.php") ; ?>
+  <?php include($_SERVER["DOCUMENT_ROOT"]."/assets/partial/dm_modal.php") ; ?>
+  <?php include($_SERVER["DOCUMENT_ROOT"]."/assets/partial/follow_modal.php") ; ?>
 
-		<h1>投稿</h1>
-		<div id="wrap">
-			<?php if (isset($error)) : ?>
-				<p class="error"><?= htmlspecialchars($error); ?></p>
-			<?php endif; ?>
-			<form action="" method="POST" enctype="multipart/form-data">
-				<p>
-					<label for="content">テキスト</label>
-					<input type="text" name="content" id="content" />
-				</p>
-				<p>
-					<label for="upfile">画像ファイル</label>
-					<input type="file" name="upfile" id="upfile" />
-				</p>
-				<p>
-					<button type="submit">送信</button>
-				</p>
-			</form>
-		</div>
+  <div class="container p-t-md">
+    <div class="row">
+      <div class="col-md-3">
+        <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_profile.php") ; ?>
+        <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/other_profile.php") ; ?>
+        <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_photo.php") ; ?>
 
-		<h1>投稿画像一覧</h1>
+      </div>
 
-		<?php foreach ($post->display() as $image): ?>
+      <div class="col-md-6">
+        <ul class="list-group media-list media-list-stream">
+          <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/post_form.php") ; ?>
+          <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/time_line.php") ; ?>
+        </ul>
+      </div>
 
-			<p>
-				<img src="<?php echo $image["img_path"] ; ?>" width="300px">
-			</p>
-		<?php endforeach ; ?>
-		<h1>フォロー一覧</h1>
-		<?php foreach ($follow->get_follow() as $f): ?>
-			<p>
-				<a href="./users.php?id=<?php echo $f['id'] ; ?>"><?php echo $f["user_name"] ; ?></a>
-			</p>
-		<?php endforeach ; ?>
+      <!-- 右側 -->
+      <div class="col-md-3">
+        <div class="alert alert-warning alert-dismissible hidden-xs" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <a class="alert-link" href="profile/">Visit your profile!</a> Check your self, you aren't looking too good.
+        </div>
+
+        <!-- 広告 -->
+        <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/advertisement.php") ; ?>
+        
+        <!-- おすすめユーザーみたいなやつ -->
+        <?php include($_SERVER["DOCUMENT_ROOT"]."/assets/partial/recomment_user.php") ; ?>
+      </div>
 
 
-		<h1>ユーザー一覧</h1>
-		<?php foreach($users as $u): ?>
-			<?php if($u["user_id"] != $_SESSION["user_id"]): ?>
-				<p>
-					<a href="users.php?id=<?php echo $u['id'] ; ?>"><?php echo $u["user_name"] ; ?></a>
-				</p>
-			<?php endif ; ?>
-		<?php endforeach ; ?>
-
-	</div>
-
-	<script src="assets/jquery/jquery.js" type="text/javascript"></script>
-	<script src="assets/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+      <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>
 
 </body>
 </html>
+
