@@ -9,9 +9,9 @@ $domain = "http://higesta.com/" ;
 // // ログインボタンが押された場合
 if (!empty($_POST["login"])) {
   // authクラスのインスタンスを生成
-  $auth = new Auth($_POST["email"],$_POST["user_password"]) ;
+  $auth = new Auth($_POST["email"]) ;
   // authクラスのlogin_auth関数を実行
-  $msg = $auth->login_auth($_POST["user_id"]) ;
+  $msg = $auth->login_auth($_POST["user_password"]) ; 
 }
 
 // ログインページに移動したとしてももうすでにログインしていれば、index.phpへ飛ばす

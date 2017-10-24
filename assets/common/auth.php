@@ -15,7 +15,7 @@ class Auth{
 		$this->domain = "http://higesta.com/" ;
 	}
 
-	function login_auth($post){
+	function login_auth($password){
 		
 		// メッセージを返すために$msgを定義する。
 		$msg = "" ;
@@ -34,14 +34,15 @@ class Auth{
 		// もしデータがあれば、
 		if ($result) {
 			// もしパスワードがあっていれば、
-			if (password_verify($this->password, $result['password'])) {
+			if (password_verify($password, $result['password'])) {
 				session_regenerate_id(true);
 
                 // user_idをセッションへ保存		
 				$_SESSION["user_id"] = $result["user_id"] ;
 				$_SESSION["id"] = $result["id"] ;
 
-				header("Location: ../index.php");
+
+				header("Location: ".$this->domain);
 
 				// exit();
 			} else {

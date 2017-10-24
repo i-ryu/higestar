@@ -2,8 +2,6 @@
 
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 
-$user->password_check($_SESSION["id"],"test") ;
-
 ?>
 
 <!DOCTYPE html>
@@ -24,8 +22,6 @@ $user->password_check($_SESSION["id"],"test") ;
   <link href="assets/css/toolkit.css" rel="stylesheet">
   <link href="assets/css/application.css" rel="stylesheet">
   <style>
-  /* note: this is a hack for ios iframe for bootstrap themes shopify page */
-  /* this chunk of css is not part of the toolkit :) */
   body {
     width: 1px;
     min-width: 100%;
@@ -75,6 +71,6 @@ $user->password_check($_SESSION["id"],"test") ;
 
       <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>
 
-</body>
-</html>
+    </body>
+    </html>
 
