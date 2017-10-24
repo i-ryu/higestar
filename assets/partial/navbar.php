@@ -60,7 +60,8 @@ $domain = "http://higesta.com/" ;
         <li><a href="#" data-action="growl">Growl</a></li>
         <li><a href="<?php echo $domain ; ?>edit">プロフィール編集</a></li>
         <li><a href="login/">ログアウト</a></li>
-        <li><a href="">苦情はこちらへ</a></li>
+        <li><a href="">ランキング</a></li>
+        <li><a href="">苦情はこちら</a></li>
       </ul>
     </div>
   </div>
