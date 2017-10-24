@@ -10,7 +10,7 @@
       <a class="text-inherit" href="<?php echo $domain ; ?>profile/"><?php echo $user->name; ?></a>
     </h5>
 
-    <p class="m-b-md">がニオにおあvん</p>
+    <p class="m-b-md">栃木出身の20歳です。好きな言葉は『一日一髭』</p>
 
     <ul class="panel-menu">
       <li class="panel-menu-item">
