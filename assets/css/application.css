@@ -74,3 +74,8 @@
 .app-brand img {
   width: 100%;
 }
+
+
+.fa-pink2:before {
+  color: #ee82ee ;
+}

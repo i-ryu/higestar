@@ -21,7 +21,9 @@ $domain = "http://higesta.com/" ;
       <ul class="nav navbar-nav hidden-xs">
           <li class="active"><a href="<?php echo $domain ; ?>">Home</a></li>
           <li><a href="<?php echo $domain; ?>profile/">Profile</a></li>
+          <li><a href="<?php echo $domain; ?>favorite/">Favorite</a></li>
           <li><a data-toggle="modal" href="#msgModal">Messages</a></li>
+
           <li><a href="<?php echo $domain ; ?>docs/">Docs</a></li>
 
       </ul>
@@ -59,14 +61,8 @@ $domain = "http://higesta.com/" ;
       <ul class="nav navbar-nav hidden">
         <li><a href="#" data-action="growl">Growl</a></li>
         <li><a href="<?php echo $domain ; ?>edit">プロフィール編集</a></li>
-<<<<<<< HEAD
         <li><a href="<?php echo $domain ; ?>login/">ログアウト</a></li>
-
-=======
-        <li><a href="login/">ログアウト</a></li>
-        <li><a href="">ランキング</a></li>
-        <li><a href="">苦情はこちら</a></li>
->>>>>>> ryuya
+        <li><a href="<?php echo $domain ; ?>contact/">苦情はこちら</a></li>
       </ul>
     </div>
   </div>

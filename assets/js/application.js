@@ -1,11 +1,11 @@
-var $input = $('<div class="modal-body"><input type="text" name="dm" class="form-control" placeholder="Messageだよ"></form>')
+var $input = $('<div class="modal-body"><form method="POST" action="" id="dm_form"><input type="text" name="dm" class="form-control" placeholder="Message"></form></div>')
 
 $(document).on('click', '.js-msgGroup', function () {
   $('.js-msgGroup, .js-newMsg').addClass('hide')
   $('.js-conversation').removeClass('hide')
-  $('.modal-title').html('<a href="#" class="js-gotoMsgs">Backだよ</a>')
+  $('.modal-title').html('<a href="#" class="js-gotoMsgs">Back</a>')
   $input.insertBefore('.js-modalBody')
-})
+}) ;
 
 $(function () {
   function getRight() {
@@ -67,12 +67,12 @@ $(document).on('click', '[data-action=growl]', function (e) {
 
   $('#app-growl').append(
     '<div class="alert alert-dark alert-dismissible fade in" role="alert">'+
-      '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
-        '<span aria-hidden="true">×</span>'+
-      '</button>'+
-      '<p>Click the x on the upper right to dismiss this little thing. Or click growl again to show more growls.</p>'+
+    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+    '<span aria-hidden="true">×</span>'+
+    '</button>'+
+    '<p>Click the x on the upper right to dismiss this little thing. Or click growl again to show more growls.</p>'+
     '</div>'
-  )
+    )
 })
 
 $(document).on('focus', '[data-action="grow"]', function () {
@@ -167,8 +167,8 @@ $(function () {
         updateCache()
 
         $(window)
-          .on('resize.theme.nav', updateCache)
-          .on('scroll.theme.nav', measure)
+        .on('resize.theme.nav', updateCache)
+        .on('scroll.theme.nav', measure)
 
         $('body').scrollspy({
           target: '#markdown-toc',
@@ -180,4 +180,8 @@ $(function () {
         }, 1000)
       }
     }
-})
+  }) 
+
+
+
+

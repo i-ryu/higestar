@@ -6,6 +6,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/user.php") ;
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/follow.php") ;
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/post.php") ;
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/message.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/like.php") ;
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/function.php") ;
 
 
@@ -25,15 +26,12 @@ if (empty($_SESSION["id"])) {
   $post = new Post($_SESSION["id"]) ;
   $userSet = new UserSet() ;
   $users = $userSet->all_find_users() ;
-  $dm = new Message($_SESSION["id"]) ;
-}
+  $message = new Message($_SESSION["id"]) ;
+  $like = new Like() ;
 
-if(!empty($_FILES["upfile"])){
-  $post->upload($_FILES['upfile']) ;
 }
 
 if(!empty($_POST["update"])){
-  var_dump($_POST) ;
   $user->update(
     h($_POST["user_id"]) ,
     h($_POST["user_name"]) ,
@@ -41,5 +39,15 @@ if(!empty($_POST["update"])){
     h($_POST["user_password"])
   ) ;
 }
+
+if(!empty($_POST["dm"])){
+
+  $message->send("2",h($_POST["dm"])) ;
+}
+
+if(!empty($_POST["post"])){
+  $post->upload($_POST["content"],$_FILES["upfile"]) ;
+}
+
 
 ?>

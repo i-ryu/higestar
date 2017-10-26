@@ -1,13 +1,16 @@
 <li class="media list-group-item p-a">
-	<div class="input-group">
-		<form action="" method="POST" enctype="multipart/form-data">
+	<form action="" method="POST" enctype="multipart/form-data">
+		<div class="input-group">
 			<input type="text" class="form-control" name="content" placeholder="Message">
+			<input type="hidden" name="post" value="true">
 			<div class="input-group-btn">
 				<button type="button" class="btn btn-default">
-					<span class="icon icon-camera"></span>
+					<label>
+						<span class="icon icon-camera"></span>
+						<input type="file" name="upfile" id="upfile" style="display: none ;" accept="image/*">
+					</label>
 				</button>
-				<input type="file" name="upfile" id="upfile" class="btn btn-default">
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 </li>

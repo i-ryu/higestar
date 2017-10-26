@@ -76,7 +76,7 @@ class Follow{
 		$users = [] ;
 
 		foreach ($follower_id_list as $f) {
-			$stmt = $this->db->dbh->prepare("SELECT users.user_name,users.id FROM users WHERE id = ?");
+			$stmt = $this->db->dbh->prepare("SELECT users.user_name,users.id,users.user_id FROM users WHERE id = ?");
 			$stmt->execute(array($f["user_id"]));
 			$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 			array_push($users, $result) ;

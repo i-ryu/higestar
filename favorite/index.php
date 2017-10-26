@@ -11,7 +11,6 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
     Home &middot; 
   </title>
   <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/head.php") ; ?>
-
 </head>
 
 <body class="with-top-navbar">
@@ -30,10 +29,42 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_photo.php") ; ?>
       </div>
 
+      <!-- 真ん中 -->
       <div class="col-md-6">
         <ul class="list-group media-list media-list-stream">
-          <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/post_form.php") ; ?>
-          <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/time_line.php") ; ?>
+
+          <ul class="list-group media-list media-list-stream">
+            <li class="list-group-item p-a">
+              <h3 class="m-a-0">お気に入り</h3>
+            </li>
+
+            <?php foreach($like->user_likes($user->id) as $post): ?>
+              <li class="media list-group-item p-a">
+
+                <a class="media-left" href="#">
+                  <img
+                  class="media-object img-circle"
+                  src="../assets/img/avatar-dhg.png">
+                </a>
+
+                <div class="media-body">
+                  <div class="media-heading">
+                    <small class="pull-right text-muted">何時間まえか表示する</small>
+                    <h5><?php echo $post["user_id"]; ?></h5>
+                  </div>
+
+                  <div class="media-body-inline-grid" data-grid="images">
+                    <div style="display: none">
+                      <img data-action="zoom" data-width="1048" data-height="700" src="../assets/img/avatar-fat.jpg">
+                    </div><br>
+
+                    <span class="fa fa-heart fa-2x fa-pink" aria-hidden="true"></span><br>
+                    <p>文章文章</p>
+                  </div>
+                </div>
+              </li>
+            <?php endforeach ; ?>
+          </ul>
         </ul>
       </div>
 
@@ -58,17 +89,18 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 
           function like_save(id){
             console.log(id) ;
-            $(document).on("click", "#like_btn"+id, function () {
+            $(document).on('click', '#like_btn'+id, function () {
               console.log(this.id);
-              console.log($("#like_btn"+id)) ;
-              // クラスが存在するか判定するところをかく
-              $("#like_btn"+id).removeClass("fa-heart-o") ;
-              $("#like_btn"+id).addClass("fa-heart") ;
-              $("#like_btn"+id).addClass("fa-pink2") ;
+              console.log($('#like_btn'+id)) ;
+              $('#like_btn'+id).removeClass("fa-heart-o") ;
+              $('#like_btn'+id).addClass('fa-heart') 
+              $('#like_btn'+id).addClass('fa-pink') 
             });
+            console.log("mgo") ;
             <?php 
-            $like->save($user->id,"1") ;
+            $like->save("1","1") ;
             ?>
+
           }
 
         </script>

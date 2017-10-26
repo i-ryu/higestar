@@ -14,32 +14,48 @@ class Message{
 	function get_users(){
 		$this->db->connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT * FROM messages WHERE user_id = ?");
+		$sql = "SELECT DISTINCT receive_id FROM messages" ;
+		$stmt = $this->db->dbh->prepare($sql);
 		$stmt->execute(array($this->id));
-		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
+		$messages = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
+
+		for($i = 0 ; $i < count($messages); $i++){
+			if($messages[$i]["receive_id"] == $this->id){
+				unset($messages[$i]);
+			}
+		}
+
+		$users = [] ;
+		foreach ($messages as $m) {
+			$stmt = $this->db->dbh->prepare("SELECT user_name,id FROM users WHERE id = ?");
+			$stmt->execute(array($m["receive_id"])) ;
+			$user = $stmt->fetch(PDO::FETCH_ASSOC) ;
+
+			array_push($users,$user) ;
+		}
 
 		$this->db->disconnect() ;
 
-		return array(
-			["user_name"=>"太郎","content"=>"ンゴアンリのい"],
-			["user_name"=>"太郎","content"=>"ンゴアンリのい"]
-		);
+		return $users ;
 	}
 
 	function get(){
-		return array(
-			['user_name' => "太郎","content" => "gに顎あののr"],
-			['user_name' => "太郎","content" => "んゔぁおん"],
-			['user_name' => "太郎","content" => "gに顎あのあvんpんヴィアのr"],
-			['user_name' => "太郎","content" => "gにvまp真央顎あののr"],
+		$this->db->connect() ;
 
-		);
+		$sql = "SELECT user_id,receive_id,content FROM messages WHERE receive_id = ? OR user_id = ? ORDER BY created DESC" ;
+		$stmt = $this->db->dbh->prepare($sql);
+		$stmt->execute(array($this->id,$this->id));
+		$messages = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
+
+		$this->db->disconnect() ;
+
+		return $messages ;
 	}
 
 	function send($receice_id,$content){
 		$this->db->connect() ;
 
-		$stmt = $this->db->dbh->prepare("INSERT INTO messages (user_id, receice_id, content) VALUES (?, ?, ?)");
+		$stmt = $this->db->dbh->prepare("INSERT INTO messages (user_id, receive_id, content) VALUES (?, ?, ?)");
 
 		$stmt->execute(array($this->id, $receice_id, $content));
 		$this->db->disconnect() ;

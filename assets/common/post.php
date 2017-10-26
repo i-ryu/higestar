@@ -6,24 +6,15 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/follow.php") ;
 class Post{
 	var $db ;
 	var $user_id ;
+	var $domain ;
 
 	function __construct($id){
 		$this->user_id = htmlspecialchars($id) ;
 		$this->db = new Database() ;
+		$this->domain = "http://higesta.com/" ;
 	}
 
-
-	function upload($upfile){
-	     // POSTではないとき何もしない
-		// if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') !== 'POST') {
-		// 	return;
-		// }
-
-	     // テキスト
-		$content = filter_input(INPUT_POST, 'content');
-		// if ('' === $content) {
-		// 	throw new Exception('てきすとは入力必須です。');
-		// }
+	function upload($content,$upfile){
 
 		if ($upfile['error'] > 0) {
 			throw new Exception('ファイルアップロードに失敗しました。');
@@ -53,7 +44,7 @@ class Post{
 
 	    // 保存先ファイルパス
 		$destination = sprintf('%s/%s.%s'
-			, "./assets/img"
+			, $dir = $_SERVER["DOCUMENT_ROOT"]."user_images/".$this->user_id
 			, $filename
 			, $ext
 		);
@@ -61,16 +52,18 @@ class Post{
 	    // アップロードディレクトリに移動
 		if (!move_uploaded_file($tmp_name, $destination)) {
 			throw new Exception('ファイルの保存に失敗しました。');
-		}
+		} ;
+
+		$img_path = "user_images/".$this->user_id."/".$filename.".".$ext ;
 
 		// データ追加
 		$this->db->connect() ;
 		$stmt = $this->db->dbh->prepare("INSERT INTO posts(content,img_path,user_id) VALUES (?, ?, ?)");
-		$result = $stmt->execute(array($content, $destination,$this->user_id));
+		$result = $stmt->execute(array($content, $img_path,$this->user_id));
 		$this->db->disconnect() ;
 
     	// 成功時にページを移動する
-		//header("location: higesta/") ;
+		header("location: ".$this->domain) ;
 	}
 
 	function display(){
@@ -94,11 +87,15 @@ class Post{
 		$post_set = [] ;
 
 		foreach ($followers as $f) {
-			$stmt = $this->db->dbh->prepare("SELECT * FROM posts WHERE user_id = ?") ;
+			$stmt = $this->db->dbh->prepare("SELECT * FROM posts WHERE user_id = ? ORDER BY created DESC") ;
 			$stmt->execute(array($f["id"]));
 			$posts = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 			
 			foreach($posts as $post){
+				$post_date = date_create($post["created"]);
+				$now = date_create(date("Y-m-d H:i:s"));
+				$interval = date_diff($post_date, $now);
+				$post["diff"] = $interval->format("%d日%h時間%i分%s秒");
 				$post["user_name"] = $f["user_name"] ;
 				array_push($post_set,$post) ;				
 			}

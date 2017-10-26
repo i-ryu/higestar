@@ -10,18 +10,18 @@
       <a class="text-inherit" href="<?php echo $domain ; ?>profile/"><?php echo $user->name; ?></a>
     </h5>
 
-    <p class="m-b-md">栃木出身の20歳です。好きな言葉は『一日一髭』</p>
+    <p class="m-b-md"><?php echo $user->content; ?></p>
 
     <ul class="panel-menu">
       <li class="panel-menu-item">
-        <a href="#userModal" class="text-inherit" data-toggle="modal">
+        <a href="#follow_list" class="text-inherit" data-toggle="modal">
           フォロー
           <h5 class="m-y-0"><?php echo count($follow->get_follow()); ?></h5>
         </a>
       </li>
 
       <li class="panel-menu-item">
-        <a href="#userModal" class="text-inherit" data-toggle="modal">
+        <a href="#follower_list" class="text-inherit" data-toggle="modal">
           フォロワー
           <h5 class="m-y-0"><?php echo count($follow->get_follower()); ?></h5>
         </a>
