@@ -64,10 +64,10 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
               // クラスが存在するか判定するところをかく
               $("#like_btn"+id).removeClass("fa-heart-o") ;
               $("#like_btn"+id).addClass("fa-heart") ;
-              $("#like_btn"+id).addClass("fa-pink2") ;
+              $("#like_btn"+id).addClass("fa-pink") ;
             });
             <?php 
-            $like->save($user->id,"1") ;
+            $user->like->save($user->id,"1") ;
             ?>
           }
 

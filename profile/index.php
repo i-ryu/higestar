@@ -39,10 +39,10 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
       <p class="profile-header-bio">
         <div class="row">
           <div class="col-md-offset-4 col-md-1 profile-header-bio">
-            フォロー<br><?php echo count($follow->get_follow()); ?> 
+            フォロー<br><?php echo count($user->follow->get_follow()); ?> 
           </div>
           <div class="col-md-1 profile-header-bio">
-            フォロワー<br><?php echo count($follow->get_follower()); ?>
+            フォロワー<br><?php echo count($user->follow->get_follower()); ?>
           </div>
           <div class="col-md-1 profile-header-bio">
             いいね<br>100
@@ -71,7 +71,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
   </div>
 
   <div class="container m-y-md" data-grid="images">
-    <?php foreach ($post->display() as $image): ?>
+    <?php foreach ($user->post->display() as $image): ?>
       <div>
         <img data-width="640" data-height="400" data-action="zoom" src="../<?php echo $image["img_path"] ; ?>">
       </div>

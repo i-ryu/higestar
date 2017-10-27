@@ -18,17 +18,7 @@ if (empty($_SESSION["id"])) {
   header("Location:".$domain."/login");
   exit();
 }elseif(!empty($_SESSION["user_id"])){
-
   $user = new User($_SESSION["id"]) ;
-  $follow = new Follow($_SESSION["id"]) ;
-  $follow->get_follow();
-
-  $post = new Post($_SESSION["id"]) ;
-  $userSet = new UserSet() ;
-  $users = $userSet->all_find_users() ;
-  $message = new Message($_SESSION["id"]) ;
-  $like = new Like() ;
-
 }
 
 if(!empty($_POST["update"])){

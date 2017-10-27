@@ -42,9 +42,9 @@ $domain = "http://higesta.com/" ;
         </ul>
 
 
-      <form class="navbar-form navbar-right app-search" role="search">
+      <form class="navbar-form navbar-right app-search" role="search" method="GET" action="<?php echo $domain ; ?>search">
         <div class="form-group">
-          <input type="text" class="form-control" data-action="grow" placeholder="Search">
+          <input type="text" class="form-control" data-action="grow" placeholder="Search" name="q">
         </div>
       </form>
 

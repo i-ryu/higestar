@@ -10,7 +10,7 @@
         <div class="modal-body p-a-0 js-modalBody">
           <div class="modal-body-scroller">
             <div class="media-list media-list-users list-group js-msgGroup">
-              <?php foreach ($message->get_users() as $d): ?>
+              <?php foreach ($user->message->get_users() as $d): ?>
                 <a href="#" class="list-group-item" id="<?php echo $d['id'] ; ?>">
                   <div class="media">
                     <span class="media-left">
@@ -34,7 +34,7 @@
             <div class="hide m-a js-conversation">
               <ul class="media-list media-list-conversation">
 
-                <?php foreach ($message->get() as $m):?>
+                <?php foreach ($user->message->get() as $m):?>
                   <?php if($m["user_id"] == $user->id): ?>
                     <!-- 右側 -->
                     <li class="media media-current-user m-b-md">

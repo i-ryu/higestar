@@ -23,27 +23,19 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 	<?php include($_SERVER["DOCUMENT_ROOT"]."/assets/partial/follow_modal.php") ; ?>
 
 	<div class="container p-t-md">
+
+
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="seach_bar active"><a href="#">髭投稿</a></li>
+			<li role="presentation" class="search_bar"><a href="#">髭画像</a></li>
+			<li role="presentation" class="search_bar"><a href="#">ユーザー</a></li>
+		</ul>
+
 		<div class="row">
 
 			<!-- 左側 -->
-			<div class="col-md-3">
-				<!-- プロフィール画像のところ -->
-				<?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_profile.php") ; ?>
-
-				<!-- 誕生日とか -->
-				<?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/other_profile.php") ; ?>
-
-				<!-- 画像一覧 -->
-				<?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_photo.php") ; ?>
-
-			</div>
-
-			<!-- 真ん中 -->
 			<div class="col-md-6">
 				<ul class="list-group media-list media-list-stream">
-					<!-- ポストするところ -->
-					<?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/post_form.php") ; ?>
-
 					<!-- タイムライン -->
 					<?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/time_line.php") ; ?>
 				</ul>
@@ -64,8 +56,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 			</div>
 		</div>
 	</div>
-
-
 	<?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>
+
 </body>
 </html>

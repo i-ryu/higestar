@@ -10,7 +10,7 @@
       <div class="modal-body p-a-0">
         <div class="modal-body-scroller">
           <ul class="media-list media-list-users list-group">
-            <?php foreach ($follow->get_follow() as $f): ?>
+            <?php foreach ($user->follow->get_follow() as $f): ?>
               <li class="list-group-item">
                 <div class="media">
                   <a href="./users.php?id=<?php echo $f['id'] ; ?>">
@@ -48,7 +48,7 @@
         <div class="modal-body p-a-0">
           <div class="modal-body-scroller">
             <ul class="media-list media-list-users list-group">
-              <?php foreach ($follow->get_follower() as $f): ?>
+              <?php foreach ($user->follow->get_follower() as $f): ?>
                 <li class="list-group-item">
                   <div class="media">
                     <a href="./users.php?id=<?php echo $f['id'] ; ?>">

@@ -10,12 +10,19 @@ class User{
 	var $email ;
 	var $img_path ;
 	var $content ;
+	var $post ;
+	var $message ;
+	var $like ;
+	var $follow ;
 
 	function __construct($id){
 		$this->id = htmlspecialchars($id) ;
 		$this->db = new Database() ;
 		$this->find() ;
-
+		$this->post = new Post($id) ;
+		$this->message = new Message($id) ;
+		$this->like = new Like() ;
+		$this->follow = new follow($id) ;
 	}
 
 	function find(){

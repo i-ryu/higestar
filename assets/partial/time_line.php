@@ -1,5 +1,5 @@
 <!-- time line -->
-<?php foreach ($post->post_get() as $p): ?>
+<?php foreach ($user->post->post_get() as $p): ?>
   <li class="media list-group-item p-a">
     <a class="media-left" href="#">
       <img

@@ -98,7 +98,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
             });
             console.log("mgo") ;
             <?php 
-            $like->save("1","1") ;
+            $user->like->save("1","1") ;
             ?>
 
           }
