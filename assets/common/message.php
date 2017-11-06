@@ -1,21 +1,21 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/db_connect.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/setting.php") ;
 
-class Message{
+class Message extends Setting{
 	var $id ;
-	var $db ;
 
 	function __construct($id){
+		parent::__construct() ;
 		$this->id = $id;
-		$this->db = new Database() ;
 	}
 
 	function get_users(){
-		$this->db->connect() ;
+		parent::connect() ;
 
-		$sql = "SELECT DISTINCT receive_id FROM messages" ;
-		$stmt = $this->db->dbh->prepare($sql);
+		// トムさんに聞く
+		$sql = "SELECT DISTINCT receive_id FROM messages WHERE user_id = ?" ;
+		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute(array($this->id));
 		$messages = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 
@@ -27,39 +27,41 @@ class Message{
 
 		$users = [] ;
 		foreach ($messages as $m) {
-			$stmt = $this->db->dbh->prepare("SELECT user_name,id FROM users WHERE id = ?");
+			$stmt = $this->dbh->prepare("SELECT user_name,id,user_id FROM users WHERE id = ?");
 			$stmt->execute(array($m["receive_id"])) ;
 			$user = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
 			array_push($users,$user) ;
 		}
 
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 
 		return $users ;
 	}
 
 	function get(){
-		$this->db->connect() ;
-
-		$sql = "SELECT user_id,receive_id,content FROM messages WHERE receive_id = ? OR user_id = ? ORDER BY created DESC" ;
-		$stmt = $this->db->dbh->prepare($sql);
-		$stmt->execute(array($this->id,$this->id));
-		$messages = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
-
-		$this->db->disconnect() ;
-
-		return $messages ;
+		$sql = "
+		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created	
+		FROM users 
+		JOIN messages ON users.id = messages.user_id OR users.id = messages.user_id
+		ORDER BY created DESC" ;
+		return parent::select($sql,array($this->id,2)) ;
 	}
 
-	function send($receice_id,$content){
-		$this->db->connect() ;
+	function to_user(){
+		// トムさんに聞く
 
-		$stmt = $this->db->dbh->prepare("INSERT INTO messages (user_id, receive_id, content) VALUES (?, ?, ?)");
+		$sql = "
+		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created	
+		FROM users 
+		JOIN messages ON users.id = messages.user_id OR users.id = messages.receive_id" ;
+		return parent::select($sql,array($this->id,$this->id)) ;
+		
+	}
 
-		$stmt->execute(array($this->id, $receice_id, $content));
-		$this->db->disconnect() ;
-
+	function send($receive_id,$content){
+		$sql = "INSERT INTO messages (user_id, receive_id, content) VALUES (?, ?, ?)" ;
+		parent::insert($sql,array($this->id, $receive_id, $content)) ;
 	}
 }
 

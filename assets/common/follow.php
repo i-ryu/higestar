@@ -1,41 +1,35 @@
 <?php 
 
-require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/db_connect.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/setting.php") ;
 
-class Follow{
+class Follow extends Setting{
 	var $id ;
-	var $db ;
+	var $table_name ;
 
 	function __construct($id){
+		parent::__construct() ;
 		$this->id = $id;
-		$this->db = new Database() ;
+		$this->table_name = "follows" ;
+
 	}
 
-	function follow($follow_id){
-
-		$this->db->connect() ;
-		$stmt = $this->db->dbh->prepare("INSERT INTO follows(user_id, follow_id) VALUES (?, ?)");
-		$stmt->execute(array($this->id, $follow_id));
-		$this->db->disconnect() ;
-		header("location: users.php?id=".$follow_id) ;
+	function add($follow_id){
+		$sql = "INSERT INTO ".$this->table_name." (user_id, follow_id) VALUES (?, ?)" ;
+		parent::insert($sql,array($this->id, $follow_id)) ;
 	} 
 
-	function unfollow($unfollow_id){
-
-		$this->db->connect() ;
-		$stmt = $this->db->dbh->prepare("DELETE FROM follows WHERE user_id = ? AND follow_id = ?");
+	function remove($unfollow_id){
+		parent::connect() ;
+		$stmt = $this->dbh->prepare("DELETE FROM ".$this->table_name." WHERE user_id = ? AND follow_id = ?");
 		$stmt->execute(array($this->id, $unfollow_id));
-		$this->db->disconnect() ;
-		header("location: users.php?id=".$unfollow_id) ;
+		parent::disconnect() ;
 	} 
 
 
 	function is_follow($follow_id){
-		$this->db->connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT * FROM follows WHERE user_id = ? AND follow_id = ?");
-		$stmt->execute(array($this->id,$follow_id));
-		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
+		$sql = "SELECT * FROM ".$this->table_name." WHERE user_id = ? AND follow_id = ?" ;
+		$result = parent::select($sql,array($follow_id,$this->id)) ;
 
 		if($result != false){
 			return true ;
@@ -45,42 +39,32 @@ class Follow{
 	}
 
 	function get_follow(){
-		$this->db->connect() ;
-		// $sql = "SELECT follows.*,users.* FROM follows JOIN users ON follows.user_id = users.id WHERE 1" ;
-		// $sql = "SELECT users.id,users.user_name FROM follows JOIN users ON follows.user_id = users.id WHERE 1" ;
-		$sql = "SELECT follow_id FROM follows WHERE user_id = ?" ;
-		$stmt = $this->db->dbh->prepare($sql);
-		$stmt->execute(array($this->id));
-		$follow_id_list = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 
-		$users = [] ;
+		$sql = "SELECT users.id,users.user_id,users.user_name,users.img_path
+		FROM ".$this->table_name."
+		JOIN users ON users.id = follows.follow_id
+		WHERE follows.user_id = ?" ;
 
-		foreach ($follow_id_list as $f) {
-			$stmt = $this->db->dbh->prepare("SELECT users.user_name,users.id,users.user_id FROM users WHERE id = ?");
-			$stmt->execute(array($f["follow_id"]));
-			$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
-			array_push($users, $result) ;
-		}
-		return  $users;
+		return parent::select($sql,array($this->id)) ;
+	}
+
+	function timelime_users(){
+		$users = $this->get_follow() ;
+
+		$sql = "SELECT id,user_id,user_name,img_path FROM users WHERE id = ?" ;
+		$me = parent::select($sql,array($this->id)) ;
+		array_push($users, $me[0]) ;
+		return $users ;
 	}
 
 	function get_follower(){
-		$this->db->connect() ;
-		// $sql = "SELECT follows.*,users.* FROM follows JOIN users ON follows.follow_id = users.id WHERE 1" ;
-		// $sql = "SELECT users.id,users.user_name FROM follows JOIN users ON follows.user_id = users.id WHERE 1" ;
-		$sql = "SELECT user_id FROM follows WHERE follow_id = ?" ;
-		$stmt = $this->db->dbh->prepare($sql);
-		$stmt->execute(array($this->id));
-		$follower_id_list = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 
-		$users = [] ;
+		$sql = "SELECT users.id,users.user_id,users.user_name,users.img_path
+		FROM ".$this->table_name."
+		JOIN users ON users.id = follows.user_id
+		WHERE follows.follow_id = ?" ;
 
-		foreach ($follower_id_list as $f) {
-			$stmt = $this->db->dbh->prepare("SELECT users.user_name,users.id,users.user_id FROM users WHERE id = ?");
-			$stmt->execute(array($f["user_id"]));
-			$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
-			array_push($users, $result) ;
-		}
+		$users = parent::select($sql,array($this->id)) ;
 		return  $users;
 	}
 

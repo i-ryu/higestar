@@ -1,18 +1,16 @@
 
 <?php 
-require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/db_connect.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/setting.php") ;
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/function.php") ;
 
-class Auth{
+class Auth extends Setting{
 	var $id ;
 	var $email ;
-	var $db ;
-	var $domain ;
 
 	function __construct($email){
+		parent::__construct() ;
 		$this->email = $email ;
-		$this->db = new Database() ;
-		$this->domain = "http://higesta.com/" ;
+
 	}
 
 	function login_auth($password){
@@ -25,9 +23,9 @@ class Auth{
 		}
 
 		// データベースからデータを取ってくる。
-		$this->db->connect() ;
+		parent::connect() ;
 		$sql = "SELECT * FROM users WHERE email = ?" ;
-		$stmt = $this->db->dbh->prepare($sql);
+		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute(array($this->email));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
@@ -52,7 +50,7 @@ class Auth{
 			$msg = "ユーザーIDあるいはパスワードに誤りがあります。";
 		}
 
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 		return $msg ;
 	}
 	
@@ -72,11 +70,11 @@ class Auth{
 			&& $password === $password2) 
 		{
 			// データベースへ保存
-			$this->db->connect() ;
-			$stmt = $this->db->dbh->prepare("INSERT INTO users (email,password) VALUES (?, ?)");
+			parent::connect() ;
+			$stmt = $this->dbh->prepare("INSERT INTO users (email,password) VALUES (?, ?)");
 			$stmt->execute(array($this->email, password_hash($password, PASSWORD_DEFAULT)));
 			
-			$stmt = $this->db->dbh->prepare("SELECT * FROM users WHERE email = ?") ;
+			$stmt = $this->dbh->prepare("SELECT * FROM users WHERE email = ?") ;
 			$stmt->execute(array($this->email));
 			$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
@@ -94,7 +92,7 @@ class Auth{
 				$msgs[] = array('blue', 'Created directory "' . $dir . '"');
 			}			
 
-			$this->db->disconnect() ;
+			parent::disconnect() ;
 
 
 			return true ;
@@ -106,16 +104,16 @@ class Auth{
 	}
 
 	function setting_profile($user_id,$user_name,$profile_content,$file){
-		$this->db->connect() ;
+		parent::connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT id,user_id FROM users WHERE email = ?") ;
+		$stmt = $this->dbh->prepare("SELECT id,user_id FROM users WHERE email = ?") ;
 		$stmt->execute(array($this->email));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
 		$_SESSION["id"] = $result["id"] ;
 		$_SESSION["user_id"] = $result["user_id"] ;
 
-		$stmt = $this->db->dbh->prepare("
+		$stmt = $this->dbh->prepare("
 			UPDATE users SET 
 			user_id = ?
 			, user_name = ?
@@ -141,7 +139,7 @@ class Auth{
         // ファイルのパーミッションを確実に0644に設定する
 		chmod($dir, 0644);
 
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 		//header("Location: ".$this->domain) ;
 	}
 

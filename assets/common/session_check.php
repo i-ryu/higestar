@@ -21,6 +21,7 @@ if (empty($_SESSION["id"])) {
   $user = new User($_SESSION["id"]) ;
 }
 
+// プロフィールの更新
 if(!empty($_POST["update"])){
   $user->update(
     h($_POST["user_id"]) ,
@@ -30,14 +31,18 @@ if(!empty($_POST["update"])){
   ) ;
 }
 
-if(!empty($_POST["dm"])){
 
-  $message->send("2",h($_POST["dm"])) ;
+// 投稿
+if(!empty($_POST["post"])){
+  //$user->post->upload($_POST["content"],$_FILES["upfile"]) ;
 }
 
-if(!empty($_POST["post"])){
-  $post->upload($_POST["content"],$_FILES["upfile"]) ;
+
+// 検索
+if(!empty($_GET["q"])){
+  $user->post->search_get($_GET["q"]) ;
 }
 
 
 ?>
+

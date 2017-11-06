@@ -37,11 +37,11 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
             <li class="list-group-item p-a">
               <h3 class="m-a-0">お気に入り</h3>
             </li>
-
-            <?php foreach($like->user_likes($user->id) as $post): ?>
+            <?php $timeline_posts = $user->like->user_likes($user->id); ?>
+            <?php foreach($timeline_posts as $post): ?>
               <li class="media list-group-item p-a">
 
-                <a class="media-left" href="#">
+                <a class="media-left" href="<?php echo $user->domain.'profile/?id='.$post["id"] ; ?>">
                   <img
                   class="media-object img-circle"
                   src="../assets/img/avatar-dhg.png">
@@ -49,17 +49,17 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
 
                 <div class="media-body">
                   <div class="media-heading">
-                    <small class="pull-right text-muted">何時間まえか表示する</small>
-                    <h5><?php echo $post["user_id"]; ?></h5>
+                    <small class="pull-right text-muted"><?php echo diff($post["created"]); ?></small>
+                    <h5><?php echo $post["user_name"]; ?></h5>
                   </div>
 
                   <div class="media-body-inline-grid" data-grid="images">
                     <div style="display: none">
-                      <img data-action="zoom" data-width="1048" data-height="700" src="../assets/img/avatar-fat.jpg">
+                      <img data-action="zoom" data-width="1048" data-height="700" src="http://higesta.com/<?php echo $post['img_path'] ; ?>">
                     </div><br>
 
                     <span class="fa fa-heart fa-2x fa-pink" aria-hidden="true"></span><br>
-                    <p>文章文章</p>
+                    <p><?php echo $post["content"]; ?></p>
                   </div>
                 </div>
               </li>
@@ -81,30 +81,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
           <!-- おすすめユーザーみたいなやつ -->
           <?php include($_SERVER["DOCUMENT_ROOT"]."/assets/partial/recomment_user.php") ; ?>
         </div>
-
-
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>
-
-        <script type="text/javascript">
-
-          function like_save(id){
-            console.log(id) ;
-            $(document).on('click', '#like_btn'+id, function () {
-              console.log(this.id);
-              console.log($('#like_btn'+id)) ;
-              $('#like_btn'+id).removeClass("fa-heart-o") ;
-              $('#like_btn'+id).addClass('fa-heart') 
-              $('#like_btn'+id).addClass('fa-pink') 
-            });
-            console.log("mgo") ;
-            <?php 
-            $user->like->save("1","1") ;
-            ?>
-
-          }
-
-        </script>
-
       </body>
       </html>
 

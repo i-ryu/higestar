@@ -26,13 +26,15 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
     <div class="row">
       <div class="col-md-3">
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_profile.php") ; ?>
-        <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/other_profile.php") ; ?>
+        <?php // include($_SERVER["DOCUMENT_ROOT"]."assets/partial/other_profile.php") ; ?>
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_photo.php") ; ?>
       </div>
 
       <div class="col-md-6">
         <ul class="list-group media-list media-list-stream">
           <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/post_form.php") ; ?>
+
+          <?php $timeline_posts = $user->post->post_get() ; ?>
           <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/time_line.php") ; ?>
         </ul>
       </div>
@@ -50,28 +52,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
           <!-- おすすめユーザーみたいなやつ -->
           <?php include($_SERVER["DOCUMENT_ROOT"]."/assets/partial/recomment_user.php") ; ?>
         </div>
-
-
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/read_js.php") ; ?>
-
-        <script type="text/javascript">
-
-          function like_save(id){
-            console.log(id) ;
-            $(document).on("click", "#like_btn"+id, function () {
-              console.log(this.id);
-              console.log($("#like_btn"+id)) ;
-              // クラスが存在するか判定するところをかく
-              $("#like_btn"+id).removeClass("fa-heart-o") ;
-              $("#like_btn"+id).addClass("fa-heart") ;
-              $("#like_btn"+id).addClass("fa-pink") ;
-            });
-            <?php 
-            $user->like->save($user->id,"1") ;
-            ?>
-          }
-
-        </script>
 
       </body>
       </html>

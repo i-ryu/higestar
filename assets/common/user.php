@@ -1,9 +1,8 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/db_connect.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/setting.php") ;
 
-class User{
-	var $db ;
+class User extends Setting{
 	var $id ;
 	var $user_id ;
 	var $name ;
@@ -16,19 +15,21 @@ class User{
 	var $follow ;
 
 	function __construct($id){
+		parent::__construct() ;
 		$this->id = htmlspecialchars($id) ;
-		$this->db = new Database() ;
 		$this->find() ;
 		$this->post = new Post($id) ;
 		$this->message = new Message($id) ;
-		$this->like = new Like() ;
+		$this->like = new Like($id) ;
 		$this->follow = new follow($id) ;
+
+		$this->notice() ;
 	}
 
 	function find(){
-		$this->db->connect() ;
+		parent::connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT * FROM users WHERE id = ?");
+		$stmt = $this->dbh->prepare("SELECT * FROM users WHERE id = ?");
 		$stmt->execute(array($this->id));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 
@@ -39,13 +40,13 @@ class User{
 		$this->img_path = $result["img_path"] ;
 		$this->content = $result["content"] ;
 
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 	}
 
 	function password_check($password){
-		$this->db->connect() ;
+		parent::connect() ;
 		$sql = "SELECT * FROM users WHERE id = ?" ;
-		$stmt = $this->db->dbh->prepare($sql);
+		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute(array($this->id));
 		$result = $stmt->fetch(PDO::FETCH_ASSOC) ;
 		//var_dump($result) ;
@@ -62,7 +63,7 @@ class User{
 			return false ;
 		}
 
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 
 	}
 
@@ -70,9 +71,9 @@ class User{
 		// パスワードが一致しているか確認
 		var_dump($this->password_check($password)) ;
 		if($this->password_check($password)){
-			$this->db->connect() ;
+			parent::connect() ;
 
-			$stmt = $this->db->dbh->prepare("
+			$stmt = $this->dbh->prepare("
 				UPDATE users SET 
 				user_id = ?
 				, user_name = ?
@@ -88,30 +89,43 @@ class User{
 
 			$stmt->execute($params);
 
-			$this->db->disconnect() ;
+			parent::disconnect() ;
 
 		}
+	}
+
+	function notice(){
+
+		$sql = "
+		SELECT * 
+		FROM users
+		JOIN likes ON users.id = likes.user_id
+		JOIN follows ON users.id = follows.follow_id
+		WHERE users.id = ?
+		ORDER BY created DESC" ;
+		$result = parent::select($sql,[$this->id]) ;
+		// echo "<pre>";
+		// var_dump($result) ;
+		// echo "</pre>";
 
 	}
 }
 
-class UserSet{
-	var $db ;
+class UserSet extends Setting{
 
 	function __construct(){
-		$this->db = new Database() ;
 	}
 
 	function all_find_users(){
 		$users = [] ;
 
-		$this->db->connect() ;
+		parent::connect() ;
 
-		$stmt = $this->db->dbh->prepare("SELECT id,user_id,user_name FROM users");
+		$stmt = $this->dbh->prepare("SELECT id,user_id,user_name FROM users");
 		$stmt->execute();
 		$users = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 
 		return $users ;
 	}

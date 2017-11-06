@@ -7,7 +7,7 @@
     </a>
 
     <h5 class="panel-title">
-      <a class="text-inherit" href="<?php echo $domain ; ?>profile/"><?php echo $user->name; ?></a>
+      <a class="text-inherit" id="user_name" href="<?php echo $domain ; ?>profile/"><?php echo $user->name; ?></a>
     </h5>
 
     <p class="m-b-md"><?php echo $user->content; ?></p>

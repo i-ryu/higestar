@@ -1,5 +1,5 @@
 <li class="media list-group-item p-a">
-	<form action="" method="POST" enctype="multipart/form-data">
+	<form action="" method="POST" enctype="multipart/form-data" id="hige_post">
 		<div class="input-group">
 			<input type="text" class="form-control" name="content" placeholder="Message">
 			<input type="hidden" name="post" value="true">

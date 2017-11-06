@@ -1,17 +1,16 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/db_connect.php") ;
 require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/follow.php") ;
+require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/setting.php") ;
 
-class Post{
-	var $db ;
+class Post extends Setting{
 	var $user_id ;
-	var $domain ;
+	var $table_name ;
 
 	function __construct($id){
+		parent::__construct();
 		$this->user_id = htmlspecialchars($id) ;
-		$this->db = new Database() ;
-		$this->domain = "http://higesta.com/" ;
+		$this->table_name = "posts" ;
 	}
 
 	function upload($content,$upfile){
@@ -57,37 +56,38 @@ class Post{
 		$img_path = "user_images/".$this->user_id."/".$filename.".".$ext ;
 
 		// データ追加
-		$this->db->connect() ;
-		$stmt = $this->db->dbh->prepare("INSERT INTO posts(content,img_path,user_id) VALUES (?, ?, ?)");
+		parent::connect() ;
+		$stmt = $this->dbh->prepare("INSERT INTO ".$this->table_name." (content,img_path,user_id) VALUES (?, ?, ?)");
 		$result = $stmt->execute(array($content, $img_path,$this->user_id));
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 
     	// 成功時にページを移動する
 		header("location: ".$this->domain) ;
 	}
 
 	function display(){
-		$this->db->connect() ;
 		// 画像データ取得
 		// データ追加
-		$stmt = $this->db->dbh->prepare("SELECT img_path FROM posts WHERE user_id = ?");
+		parent::connect() ;
+		$stmt = $this->dbh->prepare("SELECT img_path FROM ".$this->table_name." WHERE user_id = ?");
 		$result = $stmt->execute(array($this->user_id));
 		$path_set = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 		return $path_set ;
 
 	}
 
 	function post_get(){
-		$this->db->connect() ;
+		// トムさんに聞く
+		parent::connect() ;
 
 		$follow = new Follow($this->user_id) ;
-		$followers = $follow->get_follower() ;
+		$followers = $follow->timelime_users() ;
 
 		$post_set = [] ;
 
 		foreach ($followers as $f) {
-			$stmt = $this->db->dbh->prepare("SELECT * FROM posts WHERE user_id = ? ORDER BY created DESC") ;
+			$stmt = $this->dbh->prepare("SELECT * FROM ".$this->table_name." WHERE user_id = ? ORDER BY created DESC") ;
 			$stmt->execute(array($f["id"]));
 			$posts = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 			
@@ -100,10 +100,24 @@ class Post{
 				array_push($post_set,$post) ;				
 			}
 		}
-		$this->db->disconnect() ;
+		parent::disconnect() ;
 
 		return $post_set ;		
 
 	}
+
+	function search_get($q){
+		$sql = "SELECT * FROM".$this->table_name."WHERE content LIKE '%". $q ."%' ORDER BY created DESC" ;
+		return parent::select($sql,[]) ;	
+
+	}
+
+	function user_get(){
+		$sql = "SELECT posts.img_path,users.user_name,posts.content,posts.created,users.id 
+		FROM ".$this->table_name."
+		JOIN users ON posts.user_id = users.id" ;
+		return parent::select($sql,[]) ;
+	}
+
 
 }
