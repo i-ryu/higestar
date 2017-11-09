@@ -88,7 +88,18 @@ class Like extends Setting{
 		}else{
 			return true ;
 		}
-		
+	}
+
+	function best_post_check(){
+		$sql = "SELECT * FROM best_likes WHERE post_id = ? AND user_id = ?" ;
+		$result = parent::select($sql,[$post_id,$this->user_id]) ;
+
+		if($result == false){
+			return false ;
+		}else{
+			return true ;
+		}
+
 	}
 }
 

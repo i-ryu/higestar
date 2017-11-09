@@ -108,7 +108,7 @@ class Post extends Setting{
 		}
 		// foreachで1つずつ値を取り出す
 		foreach ($post_set as $key => $value) {
-			$id[$key] = $value['id'];
+			$id[$key] = $value['created'];
 		}
 		array_multisort($id, SORT_DESC, $post_set);
 

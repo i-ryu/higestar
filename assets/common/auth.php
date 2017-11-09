@@ -140,7 +140,7 @@ class Auth extends Setting{
 		chmod($dir, 0644);
 
 		parent::disconnect() ;
-		//header("Location: ".$this->domain) ;
+		header("Location: ".$this->domain."login") ;
 	}
 
 }

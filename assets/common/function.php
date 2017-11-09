@@ -25,7 +25,7 @@ function diff($d){
 	if($min == 0){
 		return $interval->format("%h分前") ;
 	}
-	
+
 
 
 }

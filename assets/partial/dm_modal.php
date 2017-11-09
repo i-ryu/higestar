@@ -12,6 +12,7 @@
             <!-- ユーザーリスト -->
             <div class="media-list media-list-users list-group js-msgGroup">
               <?php foreach ($user->message->get_users() as $d): ?>
+
                 <a href="#" class="list-group-item dm_user_list" id="dm_list_<?php echo $d['id'].'_'.$d['user_id'] ; ?>">
                   <div class="media">
                     <span class="media-left">
@@ -20,7 +21,7 @@
                     <div class="media-body">
                       <strong><?php echo $d["user_name"]; ?></strong>
                       <div class="media-body-secondary">
-                        aaaaa
+                        
                         <?php //echo $d["content"]; ?>
                       </div>
                     </div>

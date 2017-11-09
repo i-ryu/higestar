@@ -38,6 +38,7 @@ $(function(){
   $(".unfollow_btn")
   .mouseover(function (){
     var id = $(this).attr("id");
+
     $("#"+id+" span").text(" フォロー解除") ;
   })
   .mouseout(function(){
@@ -275,7 +276,7 @@ function create_talk(position,record,ul){
 
     var img = $("<img>",{
       class : "img-circle media-object",
-      src : "http://higesta.com/assets/img/avatar-dhg.png"
+      src : "http://higesta.com/"+record["img_path"]
     }) ;
 
     body_box.append(body_text) ;
@@ -301,7 +302,7 @@ function create_talk(position,record,ul){
 
     var img_left = $("<img>",{
       class : "img-circle media-object",
-      src : "http://higesta.com/assets/img/avatar-dhg.png",
+      src : "http://higesta.com/"+record["img_path"],
     }) ;
 
     a_left.append(img_left) ;

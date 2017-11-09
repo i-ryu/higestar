@@ -37,7 +37,7 @@
         </div>
         <br>
         <div class="pull-left">
-          <p><?php echo $p["content"]; ?></p>
+          <p style="font-size: 20px;"><strong><?php echo $p["content"]; ?></strong></p>
         </div>
       </div>
 

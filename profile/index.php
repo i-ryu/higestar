@@ -133,7 +133,7 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
                 </div><br>
 
                 <div class="pull-left">
-                  <p>あああ</p>                  
+                  <p><?php echo $p["content"]; ?></p>                  
                 </div>
 
               </div>
@@ -169,7 +169,7 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
                     <span class="fa fa-heart-o fa-2x pull-right" aria-hidden="true"></span><br>
                   <?php endif; ?>
                 </div><br>
-                <p>あああ</p>
+                <p><?php echo $p["content"]; ?></p>
               </div>
             </li>
           <?php endforeach; ?>

@@ -4,7 +4,6 @@ $(function(){
 	$(".dm_user_list").click(function(){	
 		modal_ini() ;
 		var click_id = $(this).attr("id") ;
-		console.log(click_id) ;
 		var receive_id = click_id.split("_")[2];
 		var user_id = click_id.split("_")[3];
 
@@ -56,8 +55,6 @@ $(function () {
 		$("#profile_msg_conversation").removeClass("hide") ;
 		$("#profile_msg_conversation").empty() ;
 
-		// ここに記述
-
 		ajax_json("POST","assets/ajax/follow_ajax.php",{message_user_id : user_id},function(flag,result){
 			console.log(flag) ;
 			console.log(result) ;
@@ -80,6 +77,7 @@ $(function () {
 					"receive_id": receive_id ,
 				} ;
 				ajax("POST","assets/ajax/message_ajax.php",obj,function(flag,result){
+					console.log(flag) ;
 					if(flag){
 						var txt_msg = txt_msg_html(inputValue) ;
 

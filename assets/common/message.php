@@ -13,9 +13,12 @@ class Message extends Setting{
 	function get_users(){
 		parent::connect() ;
 
-		$sql = "SELECT DISTINCT receive_id FROM messages WHERE user_id = ?" ;
+		$sql = "SELECT DISTINCT receive_id 
+		FROM messages 
+		WHERE user_id = ? OR receive_id = ?" ;
 		$stmt = $this->dbh->prepare($sql);
-		$stmt->execute(array($this->id));
+
+		$stmt->execute([$this->id,$this->id]);
 		$messages = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 
 		for($i = 0 ; $i < count($messages); $i++){
@@ -39,7 +42,7 @@ class Message extends Setting{
 
 	function get($opponent_user_id){
 		$sql = "
-		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created 
+		SELECT users.user_name,users.img_path,messages.content,messages.user_id,messages.receive_id,messages.created 
 		FROM users  
 		JOIN messages ON users.id = messages.user_id 
 		WHERE (messages.user_id = ? AND messages.receive_id = ?) 
@@ -52,7 +55,7 @@ class Message extends Setting{
 		// トムさんに聞く
 
 		$sql = "
-		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created	
+		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created,users.img_path
 		FROM users 
 		JOIN messages ON users.id = messages.user_id OR users.id = messages.receive_id" ;
 		return parent::select($sql,[$this->id,$this->id]) ;
