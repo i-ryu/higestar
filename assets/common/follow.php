@@ -10,26 +10,24 @@ class Follow extends Setting{
 		parent::__construct() ;
 		$this->id = $id;
 		$this->table_name = "follows" ;
-
 	}
 
 	function add($follow_id){
 		$sql = "INSERT INTO ".$this->table_name." (user_id, follow_id) VALUES (?, ?)" ;
-		parent::insert($sql,array($this->id, $follow_id)) ;
+		parent::insert($sql,[$this->id, $follow_id]) ;
 	} 
 
 	function remove($unfollow_id){
 		parent::connect() ;
 		$stmt = $this->dbh->prepare("DELETE FROM ".$this->table_name." WHERE user_id = ? AND follow_id = ?");
-		$stmt->execute(array($this->id, $unfollow_id));
+		$stmt->execute([$this->id, $unfollow_id]);
 		parent::disconnect() ;
 	} 
 
 
 	function is_follow($follow_id){
-
 		$sql = "SELECT * FROM ".$this->table_name." WHERE user_id = ? AND follow_id = ?" ;
-		$result = parent::select($sql,array($follow_id,$this->id)) ;
+		$result = parent::select($sql,[$follow_id,$this->id]) ;
 
 		if($result != false){
 			return true ;
@@ -38,6 +36,18 @@ class Follow extends Setting{
 		}
 	}
 
+	function follow_check($follow_id){
+		$sql = "SELECT * FROM ".$this->table_name." WHERE user_id = ? AND follow_id = ?" ;
+		$result = parent::select($sql,[$this->id,$follow_id]) ;
+
+		if($result != false){
+			return true ;
+		}elseif ($result == false) {
+			return false ;
+		}
+	}
+
+
 	function get_follow(){
 
 		$sql = "SELECT users.id,users.user_id,users.user_name,users.img_path
@@ -45,14 +55,14 @@ class Follow extends Setting{
 		JOIN users ON users.id = follows.follow_id
 		WHERE follows.user_id = ?" ;
 
-		return parent::select($sql,array($this->id)) ;
+		return parent::select($sql,[$this->id]) ;
 	}
 
 	function timelime_users(){
 		$users = $this->get_follow() ;
 
 		$sql = "SELECT id,user_id,user_name,img_path FROM users WHERE id = ?" ;
-		$me = parent::select($sql,array($this->id)) ;
+		$me = parent::select($sql,[$this->id]) ;
 		array_push($users, $me[0]) ;
 		return $users ;
 	}
@@ -64,7 +74,7 @@ class Follow extends Setting{
 		JOIN users ON users.id = follows.user_id
 		WHERE follows.follow_id = ?" ;
 
-		$users = parent::select($sql,array($this->id)) ;
+		$users = parent::select($sql,[$this->id]) ;
 		return  $users;
 	}
 

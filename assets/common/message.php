@@ -13,7 +13,6 @@ class Message extends Setting{
 	function get_users(){
 		parent::connect() ;
 
-		// トムさんに聞く
 		$sql = "SELECT DISTINCT receive_id FROM messages WHERE user_id = ?" ;
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute(array($this->id));
@@ -30,7 +29,6 @@ class Message extends Setting{
 			$stmt = $this->dbh->prepare("SELECT user_name,id,user_id FROM users WHERE id = ?");
 			$stmt->execute(array($m["receive_id"])) ;
 			$user = $stmt->fetch(PDO::FETCH_ASSOC) ;
-
 			array_push($users,$user) ;
 		}
 
@@ -39,13 +37,15 @@ class Message extends Setting{
 		return $users ;
 	}
 
-	function get(){
+	function get($opponent_user_id){
 		$sql = "
-		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created	
-		FROM users 
-		JOIN messages ON users.id = messages.user_id OR users.id = messages.user_id
+		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created 
+		FROM users  
+		JOIN messages ON users.id = messages.user_id 
+		WHERE (messages.user_id = ? AND messages.receive_id = ?) 
+		OR (messages.user_id = ? AND messages.receive_id = ?)
 		ORDER BY created DESC" ;
-		return parent::select($sql,array($this->id,2)) ;
+		return parent::select($sql,[$this->id,$opponent_user_id,$opponent_user_id,$this->id]) ;
 	}
 
 	function to_user(){
@@ -55,13 +55,13 @@ class Message extends Setting{
 		SELECT users.user_name,messages.content,messages.user_id,messages.receive_id,messages.created	
 		FROM users 
 		JOIN messages ON users.id = messages.user_id OR users.id = messages.receive_id" ;
-		return parent::select($sql,array($this->id,$this->id)) ;
+		return parent::select($sql,[$this->id,$this->id]) ;
 		
 	}
 
 	function send($receive_id,$content){
 		$sql = "INSERT INTO messages (user_id, receive_id, content) VALUES (?, ?, ?)" ;
-		parent::insert($sql,array($this->id, $receive_id, $content)) ;
+		parent::insert($sql,[$this->id, $receive_id, $content]) ;
 	}
 }
 

@@ -32,12 +32,12 @@ if(!empty($_SESSION["user_id"])){
 </head>
 
 <body>
-  <div class="container-fluid container-fill-height">
+  <div class="container-fluid container-fill-height" style="background-image: url('../assets/img/hige.jpg');">
     <div class="container-content-middle">
       <form role="form" class="m-x-auto text-center app-login-form" method="POST" action="">
 
         <a href="../index.html" class="app-brand m-b-lg">
-          <img src="../assets/img/brand.png" alt="brand">
+          <img src="../assets/img/higesta_top.png" alt="brand">
         </a>
 
         <div class="form-group">
@@ -50,9 +50,9 @@ if(!empty($_SESSION["user_id"])){
         <input type="hidden" name="login" value="true">
 
         <div class="m-b-lg">
-          <button class="btn btn-primary">ログイン</button>
-          <button class="btn btn-default" >
-            <a href="<?php echo $domain ;?>sign_up">新規登録</a>
+          <button class="btn btn-primary" style="background-color: black ; border:solid 1px black;">ログイン</button>
+          <button class="btn btn-default">
+            <a href="<?php echo $domain ;?>sign_up" style="color: black ;">新規登録</a>
           </button>
         </div>
 

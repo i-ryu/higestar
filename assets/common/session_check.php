@@ -34,7 +34,7 @@ if(!empty($_POST["update"])){
 
 // 投稿
 if(!empty($_POST["post"])){
-  //$user->post->upload($_POST["content"],$_FILES["upfile"]) ;
+  $user->post->upload($_POST["content"],$_FILES["upfile"]) ;
 }
 
 

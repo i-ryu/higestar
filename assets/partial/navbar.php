@@ -17,8 +17,9 @@
           <li id="nav_profile"><a href="<?php echo $user->domain; ?>profile/">Profile</a></li>
           <li id="nav_favorite"><a href="<?php echo $user->domain; ?>favorite/">Favorite</a></li>
           <li id="nav_favorite"><a href="<?php echo $user->domain; ?>ranking/">Ranking</a></li>
+          <li id="nav_galary"><a href="<?php echo $user->domain; ?>galary/">Galary</a></li>
           <li id="nab_message"><a data-toggle="modal" href="#msgModal">Messages</a></li>
-          <li><a href="<?php echo $user->domain ; ?>docs/">Docs</a></li>
+          <!-- <li><a href="<?php //echo $user->domain ; ?>docs/">Docs</a></li> -->
       </ul>
 
         <ul class="nav navbar-nav navbar-right m-r-0 hidden-xs">
@@ -40,6 +41,8 @@
           <input type="text" class="form-control" data-action="grow" placeholder="Search" name="q">
         </div>
       </form>
+
+      <input type="hidden" id="login_user_id" value="<?php echo $user->id ; ?>">
 
       <ul class="nav navbar-nav hidden-sm hidden-md hidden-lg">
         <li><a href="<?php echo $user->domain ; ?>">Home</a></li>

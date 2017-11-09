@@ -47,10 +47,11 @@ $(function () {
 }) ;
 
 $(document).on('click', '.js-gotoMsgs', function () {
-  $input.remove() ;
+  $(".modal-content input").remove() ;
+
   $('.js-conversation').addClass('hide') ;
   $('.js-msgGroup, .js-newMsg').removeClass('hide') ;
-  $('.modal-title').html('Messages') ;
+  $('.modal-title').html('メッセージ') ;
 }) ;
 
 $(document).on('click', '[data-action=growl]', function (e) {

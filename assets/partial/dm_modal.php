@@ -12,7 +12,7 @@
             <!-- ユーザーリスト -->
             <div class="media-list media-list-users list-group js-msgGroup">
               <?php foreach ($user->message->get_users() as $d): ?>
-                <a href="#" class="list-group-item" id="dm_list_<?php echo $d['id'].'_'.$d['user_id'] ; ?>">
+                <a href="#" class="list-group-item dm_user_list" id="dm_list_<?php echo $d['id'].'_'.$d['user_id'] ; ?>">
                   <div class="media">
                     <span class="media-left">
                       <img class="img-circle media-object" src="<?php echo $domain ; ?>assets/img/avatar-fat.jpg">
@@ -37,7 +37,7 @@
             <div class="hide m-a js-conversation" id="navbar_msg_conversation">
               <ul class="media-list media-list-conversation">
 
-                <?php foreach ($user->message->get() as $m):?>
+                <?php foreach ($user->message->get(2) as $m):?>
 
                   <?php if($m["user_id"] == $user->id): ?>
                     <!-- 右側 -->

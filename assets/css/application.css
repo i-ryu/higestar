@@ -68,7 +68,8 @@
   margin-right: 10px;
 }
 .app-brand {
-  width: 40%;
+  width: 100%;
+  /*width: 40%;*/
   display: inline-block;
 }
 .app-brand img {
@@ -79,4 +80,8 @@
 .fa-pink:before {
   color: #ee82ee ;
 }
+.fa-yellow:before {
+  color: #EAF500 ;
+}
+
 

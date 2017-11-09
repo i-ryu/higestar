@@ -25,7 +25,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
     <div class="row">
       <div class="col-md-3">
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_profile.php") ; ?>
-        <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/other_profile.php") ; ?>
+        <?php //include($_SERVER["DOCUMENT_ROOT"]."assets/partial/other_profile.php") ; ?>
         <?php include($_SERVER["DOCUMENT_ROOT"]."assets/partial/simple_photo.php") ; ?>
       </div>
 
@@ -37,7 +37,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
             <li class="list-group-item p-a">
               <h3 class="m-a-0">お気に入り</h3>
             </li>
-            <?php $timeline_posts = $user->like->user_likes($user->id); ?>
+            <?php $timeline_posts = $user->like->user_likes(); ?>
             <?php foreach($timeline_posts as $post): ?>
               <li class="media list-group-item p-a">
 
@@ -58,7 +58,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."assets/common/session_check.php") ;
                       <img data-action="zoom" data-width="1048" data-height="700" src="http://higesta.com/<?php echo $post['img_path'] ; ?>">
                     </div><br>
 
-                    <span class="fa fa-heart fa-2x fa-pink" aria-hidden="true"></span><br>
+                    <span class="fa fa-heart fa-2x fa-pink pull-right" aria-hidden="true"></span><br>
                     <p><?php echo $post["content"]; ?></p>
                   </div>
                 </div>

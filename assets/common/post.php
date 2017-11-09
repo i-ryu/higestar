@@ -78,7 +78,7 @@ class Post extends Setting{
 	}
 
 	function post_get(){
-		// トムさんに聞く
+		// トムさんに聞く 時系列順になっていない。
 		parent::connect() ;
 
 		$follow = new Follow($this->user_id) ;
@@ -87,16 +87,22 @@ class Post extends Setting{
 		$post_set = [] ;
 
 		foreach ($followers as $f) {
-			$stmt = $this->dbh->prepare("SELECT * FROM ".$this->table_name." WHERE user_id = ? ORDER BY created DESC") ;
+			$stmt = $this->dbh->prepare("SELECT * FROM posts WHERE user_id = ? ORDER BY created DESC") ;
 			$stmt->execute(array($f["id"]));
 			$posts = $stmt->fetchAll(PDO::FETCH_ASSOC) ;
 			
 			foreach($posts as $post){
+				$sql = "SELECT img_path FROM users WHERE id = ?" ;
+				$stmt = $this->dbh->prepare($sql);
+				$stmt->execute([$f["id"]]);
+				$user_img = $stmt->fetch(PDO::FETCH_ASSOC)["img_path"] ;
+
 				$post_date = date_create($post["created"]);
 				$now = date_create(date("Y-m-d H:i:s"));
 				$interval = date_diff($post_date, $now);
 				$post["diff"] = $interval->format("%d日%h時間%i分%s秒");
 				$post["user_name"] = $f["user_name"] ;
+				$post["user_img"] = $user_img ;
 				array_push($post_set,$post) ;				
 			}
 		}
@@ -113,10 +119,11 @@ class Post extends Setting{
 	}
 
 	function user_get(){
-		$sql = "SELECT posts.img_path,users.user_name,posts.content,posts.created,users.id 
+		$sql = "SELECT posts.img_path,users.img_path user_img,users.user_name,posts.content,posts.created,users.id 
 		FROM ".$this->table_name."
-		JOIN users ON posts.user_id = users.id" ;
-		return parent::select($sql,[]) ;
+		JOIN users ON posts.user_id = users.id
+		WHERE users.id = ?" ;
+		return parent::select($sql,[$this->user_id]) ;
 	}
 
 

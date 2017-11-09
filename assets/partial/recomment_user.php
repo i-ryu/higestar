@@ -9,7 +9,7 @@
           src="<?php echo $domain ; ?>assets/img/avatar-fat.jpg">
         </a>
         <div class="media-body">
-          <strong>いそ</strong> @fat
+          <strong>そのうちおすすめ</strong> @fat
           <div class="media-body-actions">
             <button class="btn btn-primary-outline btn-sm">
               <span class="icon icon-add-user"></span> フォロー
@@ -24,7 +24,7 @@
           src="<?php echo $domain ; ?>assets/img/avatar-mdo.png">
         </a>
         <div class="media-body">
-          <strong>りゅうや</strong> @mdo
+          <strong>ユーザーを表示するよ</strong> @mdo
           <div class="media-body-actions">
             <button class="btn btn-primary-outline btn-sm">
               <span class="icon icon-add-user"></span> フォロー</button></button>

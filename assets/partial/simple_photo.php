@@ -4,10 +4,10 @@
     <div data-grid="images" data-target-height="150">
       <?php foreach ($user->post->display() as $image): ?>
         <div>
-          <img data-width="640" data-height="640" data-action="zoom" src="<?php echo $domain.$image["img_path"] ; ?>">
+          <!-- <img data-width="640" data-height="640" data-action="zoom" src="<?php echo $domain.$image["img_path"] ; ?>"> -->
+          <img data-action="zoom" src="<?php echo $domain.$image["img_path"] ; ?>">
         </div>
       <?php endforeach; ?>
-      <img data-width="640" data-height="640" data-action="zoom" src="<?php echo $domain ; ?>assets/img/164H.jpg">
     </div>
   </div>
 </div>

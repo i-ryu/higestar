@@ -7,7 +7,8 @@
 
 
 
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'> -->
+<link href="<?php echo $domain ; ?>assets/css/google-font.css" rel='stylesheet' type='text/css'>
 <link href="<?php echo $domain ; ?>assets/css/toolkit.css" rel="stylesheet">
 <link href="<?php echo $domain ; ?>assets/css/application.css" rel="stylesheet">
 <link href="<?php echo $domain ; ?>assets/css/font-awesome.css" rel="stylesheet">

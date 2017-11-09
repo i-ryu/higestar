@@ -125,7 +125,7 @@ class Auth extends Setting{
 			$user_id
 			, $user_name
 			, $profile_content
-			, "assets/user_images/".$result["id"]."/".$file["name"]
+			, "user_images/".$result["id"]."/".$file["name"]
 			, $this->email
 		);
 

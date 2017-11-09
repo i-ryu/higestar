@@ -104,10 +104,11 @@ class User extends Setting{
 		WHERE users.id = ?
 		ORDER BY created DESC" ;
 		$result = parent::select($sql,[$this->id]) ;
-		// echo "<pre>";
-		// var_dump($result) ;
-		// echo "</pre>";
+	}
 
+	function all_user_img(){
+		$sql = "SELECT img_path FROM posts" ;
+		return parent::select($sql,[]) ;
 	}
 }
 

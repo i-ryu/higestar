@@ -1,11 +1,10 @@
 <!-- time line -->
 <?php foreach ($timeline_posts as $p): ?>
-
   <li class="media list-group-item p-a">
     <a class="media-left" href="<?php echo $user->domain.'profile/?id='.$p["user_id"] ; ?>">
       <img
       class="media-object img-circle"
-      src="<?php echo $domain.$user->img_path ; ?>">
+      src="<?php echo $domain.$p['user_img'] ; ?>">
     </a>
     <div class="media-body">
       <div class="media-heading">
@@ -15,19 +14,22 @@
 
       <div class="media-body-inline-grid" data-grid="images">
         <div style="display: none">
-          <img data-action="zoom" data-width="1048" data-height="700" src="<?php echo $domain.$p['img_path'] ; ?>">
+          <img data-action="zoom"  src="<?php echo $domain.$p['img_path'] ; ?>">
         </div><br>
 
         <div class="pull-right">
           <?php if($user->like->post_check($p["id"])): ?>
             <span class="like_btn fa fa-heart fa-2x fa-pink" id="<?php echo $p['id'] ; ?>" aria-hidden="true"></span>
             &nbsp; &nbsp;
+            <a href="#best_like_alert" data-toggle="modal">
             <span class="best_like_btn fa fa-star-o fa-2x" aria-hidden="true" id="best_<?php echo $p['id'] ; ?>" aria-hidden="true"></span><br>
+            </a>
           <?php else: ?>
             <span class="like_btn fa fa-heart-o fa-2x" id="<?php echo $p['id'] ; ?>" aria-hidden="true"></span>
             &nbsp; &nbsp;
-            <span class="best_like_btn fa fa-star-o fa-2x" aria-hidden="true" id="best_<?php echo $p['id'] ; ?>" aria-hidden="true"></span><br>
-
+              <span class="best_like_btn fa fa-star-o fa-2x" aria-hidden="true" id="best_<?php echo $p['id'] ; ?>" aria-hidden="true">
+              </span><br>
+            
           <?php endif ; ?>
         </div>
         <br>

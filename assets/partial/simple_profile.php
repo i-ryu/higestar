@@ -14,14 +14,14 @@
 
     <ul class="panel-menu">
       <li class="panel-menu-item">
-        <a href="#follow_list" class="text-inherit" data-toggle="modal">
+        <a href="#follow_list" class="text-inherit" data-toggle="modal" id="sp_follow">
           フォロー
           <h5 class="m-y-0"><?php echo count($user->follow->get_follow()); ?></h5>
         </a>
       </li>
 
       <li class="panel-menu-item">
-        <a href="#follower_list" class="text-inherit" data-toggle="modal">
+        <a href="#follower_list" class="text-inherit" data-toggle="modal" id="sp_follower">
           フォロワー
           <h5 class="m-y-0"><?php echo count($user->follow->get_follower()); ?></h5>
         </a>

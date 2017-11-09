@@ -18,8 +18,8 @@
                     <img class="media-object img-circle" src="<?php echo $domain.$f['img_path'] ; ?>">
                   </a>
                   <div class="media-body">
-                    <button type="submit" name="follow" class="btn btn-default btn-sm pull-right" value="<?php echo $f['id'] ; ?>">
-                      <span class="glyphicon glyphicon-user"></span> フォロー
+                    <button type="submit" name="follow" class="btn btn-default btn-sm pull-right unfollow_btn" value="<?php echo $f['id'] ; ?>" id="follow_<?php echo $f['id']; ?>">
+                      <span class="glyphicon glyphicon-user">フォロー中</span>
                     </button>
 
                     <button class="btn btn-default btn-sm follow_dm_btn pull-right" id="dm_<?php echo $f['id'].'_'.$f['user_id'] ; ?> ">                      
@@ -107,10 +107,16 @@
                     <img class="media-object img-circle" src="<?php echo $domain.$f['img_path'] ; ?>">
                   </a>
                   <div class="media-body">
-                    <button class="btn btn-default btn-sm pull-right">
-                      <span class="glyphicon glyphicon-user"></span> フォロー
-                    </button>
 
+                    <?php if($user->follow->follow_check($f["id"])): ?>
+                      <button class="btn btn-default btn-sm pull-right unfollow_btn" id="follower_<?php echo $f['id']; ?>">
+                        <span class="glyphicon glyphicon-user">フォロー中</span>
+                      </button>
+                    <?php else: ?>
+                      <button class="btn btn-default btn-sm pull-right follow_btn" id="follow_<?php echo $f['id']; ?>">
+                        <span class="glyphicon glyphicon-user">フォロー</span>
+                      </button>
+                    <?php endif; ?>
                     <button class="btn btn-default btn-sm follower_dm_btn pull-right" id="follower_dm_<?php echo $f['id'].'_'.$f['user_id'] ; ?> ">                      
                       <span class="fa fa-envelope-o" aria-hidden="true"></span>  DM
                     </button>

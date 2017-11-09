@@ -32,8 +32,8 @@ $(function () {
     $("#profile_photo_menu,#profile_post_menu").removeClass("active") ;
     $("#profile_fav_menu").addClass("active") ;
 
-    $("#profile_photo,#profile_fav").hide() ;
-    $("#profile_post").show() ;
+    $("#profile_photo,#profile_post").hide() ;
+    $("#profile_fav").show() ;
 
     event.preventDefault();
   }) ;

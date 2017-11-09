@@ -28,7 +28,7 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
   <div class="profile-header text-center" style="background-image: url(<?php echo $domain ; ?>assets/img/iceland.jpg);">
     <div class="container">
       <div class="container-inner">
-        <img class="img-circle media-object" src="../assets/img/ryuya.jpg">
+        <img class="img-circle media-object" src="<?php echo $domain.$show_user->img_path ; ?>">
         <h3 class="profile-header-user"><?php echo $show_user->name; ?></h3>
         <input type="hidden" id="show_user_id" value="<?php echo $show_user->id; ?>">
         <div class="profile-header-bio"><?php echo $show_user->content ; ?></div>
@@ -36,22 +36,22 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
 
       <p class="profile-header-bio">
         <div class="row">
-          <a href="#follow_list" class="text-inherit" data-toggle="modal">
-            <div class="col-md-offset-4 col-md-1 col-xs-6 profile-header-bio">
+          <a href="#follow_list" class="text-inherit" data-toggle="modal" id="profile_follow_btn">
+            <div class="col-md-offset-2 col-md-2 col-xs-6 profile-header-bio">
               フォロー<br><?php echo count($show_user->follow->get_follow()); ?> 
             </div>
           </a>
-          <a href="#follower_list" class="text-inherit" data-toggle="modal">
-            <div class="col-md-1 col-xs-6 profile-header-bio">
+          <a href="#follower_list" class="text-inherit" data-toggle="modal" id="profile_follower_btn">
+            <div class="col-md-2 col-xs-6 profile-header-bio">
               フォロワー<br><?php echo count($show_user->follow->get_follower()); ?>
             </div>
           </a>
 
-          <div class="col-md-1 col-xs-6 profile-header-bio">
+          <div class="col-md-2 col-xs-6 profile-header-bio">
             いいね<br><?php echo $show_user->like->count() ; ?>
           </div>
-          <div class="col-md-1 col-xs-6 profile-header-bio">
-            総いいね<br>100
+           <div class="col-md-2 col-xs-6 profile-header-bio">
+            いいねされた数<br>未実装
           </div>
         </div>
         <br>
@@ -60,11 +60,11 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
           <div class="row">
             <div class="col-md-offset-4 col-md-2 col-xs-6 profile-header-bio">
               <?php if($show_user->follow->is_follow($user->id)): ?>
-                <button class="btn btn-default-outline btn-lg unfollow_btn" id="<?php echo $show_user->id; ?>" style="color: white;">
+                <button class="btn btn-default-outline btn-lg unfollow_btn" id="profileUn_<?php echo $show_user->id; ?>" style="color: white;">
                   <span class="icon icon-add-user"> フォロー中</span>
                 </button>
               <?php else: ?>
-                <button class="btn btn-default-outline btn-lg follow_btn" id="<?php echo $show_user->id; ?>" style="color: white;">
+                <button class="btn btn-default-outline btn-lg follow_btn" id="profile_<?php echo $show_user->id; ?>" style="color: white;">
                   <span class="icon icon-add-user"> フォロー</span>
                 </button>
               <?php endif; ?>
@@ -72,7 +72,7 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
 
             <div class="col-md-1 col-xs-6 profile-header-bio">
               <button class="btn btn-default-outline btn-lg profile_dm_btn" style="color: white;" data-toggle="modal" href="#profile_msgModal" id="profile_dm_<?php echo $show_user->id ; ?> ">
-                  <i class="fa fa-envelope-o" aria-hidden="true"></i>  DM
+                <i class="fa fa-envelope-o" aria-hidden="true"></i>  DM
               </button>
             </div>
           </div>
@@ -97,9 +97,10 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
 
 
   <div id="profile_photo" class="container m-y-md" data-grid="images">
-    <?php foreach ($user->post->display() as $image): ?>
+    <?php foreach ($show_user->post->display() as $image): ?>
       <div>
-        <img data-width="640" data-height="400" data-action="zoom" src="../<?php echo $image["img_path"] ; ?>">
+        <!-- <img data-width="640" data-height="400" data-action="zoom" src="../<?php //echo $image["img_path"] ; ?>"> -->
+        <img data-action="zoom" src="../<?php echo $image["img_path"] ; ?>">
       </div>
     <?php endforeach; ?>
   </div>
@@ -110,8 +111,47 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
       <div class="col-md-offset-3 col-md-6">
 
         <ul class="media-list media-list-stream c-w-md">
-          <?php $timeline_posts = $user->post->user_get() ;?>
+          <?php $timeline_posts = $show_user->post->user_get() ;?>
           <?php foreach($timeline_posts as $p): ?>
+            <li class="media p-a">
+              <a class="media-left" href="#">
+                <img class="media-object img-circle" src="<?php echo $user->domain.$p['user_img'] ?>">
+              </a>
+              <div class="media-body">
+                <div class="media-heading">
+                  <small class="pull-right"><?php echo $p["created"]; ?></small>
+                  <h5 class="m-b-0"><?php echo $p["user_name"]; ?></h5>
+                </div>
+                <img class="media-body-inline-img" src="<?php echo $domain.$p['img_path'] ; ?>">
+
+                <div class="pull-right">
+                  <?php if($user->like->post_check($p["id"])): ?>
+                    <span class="fa fa-heart fa-2x fa-pink pull-right" aria-hidden="true"></span><br>
+                  <?php else : ?>
+                    <span class="fa fa-heart-o fa-2x pull-right" aria-hidden="true"></span><br>
+                  <?php endif; ?>
+                </div><br>
+
+                <div class="pull-left">
+                  <p>あああ</p>                  
+                </div>
+
+              </div>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="profile_fav" class="container m-y-md" style="display: none;">
+    <div class="row">
+      <div class="col-md-offset-3 col-md-6">
+        <ul class="media-list media-list-stream c-w-md">
+
+          <?php $likes_post = $show_user->like->user_likes() ;?>
+          <?php foreach($likes_post as $p): ?>
             <li class="media p-a">
               <a class="media-left" href="#">
                 <img class="media-object img-circle" src="../assets/img/avatar-fat.jpg">
@@ -122,19 +162,21 @@ if(!empty($_GET["id"]) && $_GET["id"] != $user->id){
                   <h5 class="m-b-0"><?php echo $p["user_name"]; ?></h5>
                 </div>
                 <img class="media-body-inline-img" src="<?php echo $domain.$p['img_path'] ; ?>">
+                <div class="pull-right">
+                  <?php if($user->like->post_check($p["id"])): ?>
+                    <span class="fa fa-heart fa-2x fa-pink pull-right" aria-hidden="true"></span><br>
+                  <?php else : ?>
+                    <span class="fa fa-heart-o fa-2x pull-right" aria-hidden="true"></span><br>
+                  <?php endif; ?>
+                </div><br>
                 <p>あああ</p>
               </div>
             </li>
           <?php endforeach; ?>
         </ul>
-
       </div>
     </div>
   </div>
-
-  <div id="profile_fav" class="container m-y-md" data-grid="images" style="display: none;">
-  </div>
-
 
   <!-- プロフィールからDMに飛ぶ -->
 
