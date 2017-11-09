@@ -15,9 +15,9 @@ $(function(){
   .mouseout(function(){
     var id = $(this).attr("id");
     if($("#"+id).hasClass("follow_btn")){
-      $("#"+id+" span").text(" フォロー") ;      
+      $("#"+id+" span").text(" フォロー中") ;      
     }else{
-      $("#"+id+" span").text(" フォロー中") ;
+      $("#"+id+" span").text(" フォロー") ;
     }
 
   })
@@ -27,6 +27,7 @@ $(function(){
 
     ajax("POST","assets/ajax/follow_ajax.php",{follow_id : id},function(flag,result){
       if(flag){
+        console.log($("#"+click_id)) ;
         $("#"+click_id).addClass("unfollow_btn") ;
         $("#"+click_id).removeClass("follow_btn") ;
         $("#"+click_id+" span").text(" フォロー中") ;
@@ -49,9 +50,10 @@ $(function(){
 
     ajax("POST","assets/ajax/follow_ajax.php",{unfollow_id : id},function(flag,result){
       if(flag){
-        $(".unfollow_btn").addClass("follow_btn") ;
-        $(".unfollow_btn").removeClass("unfollow_btn") ;
-        $(".follow_btn span").text(" フォロー") ;
+        console.log($("#"+click_id)) ;
+        $("#"+click_id).addClass("follow_btn") ;
+        $("#"+click_id).removeClass("unfollow_btn") ;
+        $("#"+click_id +" span").text(" フォロー") ;
       } ;
     }) ;
   }) ;

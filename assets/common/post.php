@@ -85,7 +85,7 @@ class Post extends Setting{
 		$followers = $follow->timelime_users() ;
 
 		$post_set = [] ;
-
+		$key_id = [] ;
 		foreach ($followers as $f) {
 			$stmt = $this->dbh->prepare("SELECT * FROM posts WHERE user_id = ? ORDER BY created DESC") ;
 			$stmt->execute(array($f["id"]));
@@ -106,6 +106,12 @@ class Post extends Setting{
 				array_push($post_set,$post) ;				
 			}
 		}
+		// foreachで1つずつ値を取り出す
+		foreach ($post_set as $key => $value) {
+			$id[$key] = $value['id'];
+		}
+		array_multisort($id, SORT_DESC, $post_set);
+
 		parent::disconnect() ;
 
 		return $post_set ;		

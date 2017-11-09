@@ -27,7 +27,7 @@
           <strong>ユーザーを表示するよ</strong> @mdo
           <div class="media-body-actions">
             <button class="btn btn-primary-outline btn-sm">
-              <span class="icon icon-add-user"></span> フォロー</button></button>
+              <span class="icon icon-add-user"></span> フォロー</button>
             </div>
           </div>
         </li>

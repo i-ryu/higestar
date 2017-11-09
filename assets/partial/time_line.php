@@ -22,13 +22,16 @@
             <span class="like_btn fa fa-heart fa-2x fa-pink" id="<?php echo $p['id'] ; ?>" aria-hidden="true"></span>
             &nbsp; &nbsp;
             <a href="#best_like_alert" data-toggle="modal">
-            <span class="best_like_btn fa fa-star-o fa-2x" aria-hidden="true" id="best_<?php echo $p['id'] ; ?>" aria-hidden="true"></span><br>
+              <span class="best_like_btn fa fa-star-o fa-2x" aria-hidden="true" id="best_<?php echo $p['id'] ; ?>" aria-hidden="true"></span><br>
             </a>
           <?php else: ?>
             <span class="like_btn fa fa-heart-o fa-2x" id="<?php echo $p['id'] ; ?>" aria-hidden="true"></span>
             &nbsp; &nbsp;
+            <a href="#best_like_alert" data-toggle="modal">
               <span class="best_like_btn fa fa-star-o fa-2x" aria-hidden="true" id="best_<?php echo $p['id'] ; ?>" aria-hidden="true">
-              </span><br>
+              </span>
+            </a>
+            <br>
             
           <?php endif ; ?>
         </div>

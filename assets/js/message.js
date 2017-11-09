@@ -59,6 +59,8 @@ $(function () {
 		// ここに記述
 
 		ajax_json("POST","assets/ajax/follow_ajax.php",{message_user_id : user_id},function(flag,result){
+			console.log(flag) ;
+			console.log(result) ;
 			if(flag){
 				console.log(result) ;
 				$("#profile_msg_conversation").append(conversation(result)) ;

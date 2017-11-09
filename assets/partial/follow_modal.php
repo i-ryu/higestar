@@ -18,7 +18,7 @@
                     <img class="media-object img-circle" src="<?php echo $domain.$f['img_path'] ; ?>">
                   </a>
                   <div class="media-body">
-                    <button type="submit" name="follow" class="btn btn-default btn-sm pull-right unfollow_btn" value="<?php echo $f['id'] ; ?>" id="follow_<?php echo $f['id']; ?>">
+                    <button type="submit" name="follow" class="btn btn-default btn-sm pull-right unfollow_btn" id="follow_<?php echo $f['id']; ?>">
                       <span class="glyphicon glyphicon-user">フォロー中</span>
                     </button>
 
@@ -150,6 +150,7 @@
                         </small>
                       </div>
                     </div>
+                    <?php var_dump($m) ; ?>
                     <a class="media-right" href="#">
                       <img class="img-circle media-object" src="<?php echo $domain ; ?>assets/img/avatar-dhg.png">
                     </a>
